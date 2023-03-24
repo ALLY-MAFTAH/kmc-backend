@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VehicleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// AUTH ROUTES
+Route::post('/auth/login', [App\Http\Controllers\Auth\LoginController::class,'loginApi']);
+
+
+// VEHICLE ROUTES
+Route::post('/search-vehicle', [VehicleController::class,'searchVehicle']);

@@ -13,16 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('vehicles', function (Blueprint $table) {
+        Schema::create('stickers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('reg_number')->unique();
-            $table->bigInteger('parking_id');
-            $table->bigInteger('owner_id');
-            $table->string('type');
-            $table->string('brand');
-            $table->string('color');
-            $table->softDeletes();
+            $table->bigInteger('vehicle_id');
+            $table->string('number')->unique();
+            $table->string('period')->nullable();
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->boolean('is_valid');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vehicles');
+        Schema::dropIfExists('stickers');
     }
 };

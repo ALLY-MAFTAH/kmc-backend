@@ -13,16 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('vehicles', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('reg_number')->unique();
-            $table->bigInteger('parking_id');
-            $table->bigInteger('owner_id');
-            $table->string('type');
-            $table->string('brand');
-            $table->string('color');
+            $table->date('date');
+            $table->double('amount');
+            $table->string('receipt_number');
+            $table->bigInteger('vehicle_id');
+            $table->bigInteger('sticker_id');
             $table->softDeletes();
-            $table->timestamps();
         });
     }
 
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('vehicles');
+        Schema::dropIfExists('payments');
     }
 };
