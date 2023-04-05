@@ -12,7 +12,7 @@ class Location extends Model
 
     protected $fillable = [
         'parking_id',
-        'address_name',
+        'location_name',
         'latitude',
         'longitude',
 

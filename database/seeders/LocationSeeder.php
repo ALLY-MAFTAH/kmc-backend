@@ -18,9 +18,17 @@ class LocationSeeder extends Seeder
         collect([
             [
                 'parking_id' => 1,
-                'address_name' => "I Sembeti, Dar es salaam",
-                'latitude' => "12.23435565767",
-                'longitude' => "2.23435565767",
+                'location_name' => "Manzese, Darajani",
+                'latitude' => -6.789574387903087,
+                'longitude' => 39.231051196545415,
+
+
+            ],
+            [
+                'parking_id' => 2,
+                'location_name' => "Tandale Hospital",
+                'latitude' => -6.7967465485235925,
+                'longitude' => 39.23782832538122,
             ],
 
 

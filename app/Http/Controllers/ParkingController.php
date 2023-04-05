@@ -14,72 +14,53 @@ class ParkingController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $parkings = Parking::with('location')->where('status', 1)->latest()->get();
+
+            return response()->json(['parkings' => $parkings, 'status' => 1], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage(), 'status' => 0], 404);
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function postParking(Request $request)
     {
-        //
-    }
+        $lastRow = Parking::latest()->first();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $lastPln = $lastRow ? $lastRow->pln : "KMCTNTM/000";
+        [$prefix, $numeric] = explode('/', $lastPln);
+        $newNumeric = str_pad((int)$numeric + 1, strlen($numeric), '0', STR_PAD_LEFT);
+        $newPln = "$prefix/$newNumeric";
+        $newRequest = $request->merge(['pln' => $newPln]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Parking  $parking
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Parking $parking)
-    {
-        //
-    }
+        try {
+            $attributes = $this->validate($newRequest, [
+                'pln' => ['required', 'unique:parkings'],
+                "street_id" => 'required',
+                "ward_id" => 'required',
+                "capacity" => 'required',
+                "no_of_vehicles" => 'required',
+                "leader_mobile" => 'required',
+                "leader_name" => 'required',
+                "latitude" => 'required',
+                "longitude" => 'required',
+                'location_name' => ['required', 'unique:locations'],
+            ]);
+            $attributes['status'] = true;
+            $attributes['name'] = $newRequest->name ?? "";
+            // dd($attributes);
+            $parking = Parking::create($attributes);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Parking  $parking
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Parking $parking)
-    {
-        //
-    }
+            $locationController = new LocationController();
+            $location = $locationController->postLocation($request, $parking->id);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Parking  $parking
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Parking $parking)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Parking  $parking
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Parking $parking)
-    {
-        //
+            return response()->json([
+                'parking' => $parking,
+                'location' => $location,
+                'status' => 1,
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 201);
+        }
     }
 }

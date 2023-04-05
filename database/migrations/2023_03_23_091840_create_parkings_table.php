@@ -21,8 +21,9 @@ return new class extends Migration
             $table->double('capacity');
             $table->double('no_of_vehicles');
             $table->string('leader_mobile');
-            $table->string('name')->nullable();
             $table->string('leader_name');
+            $table->boolean('status');
+            $table->string('name')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

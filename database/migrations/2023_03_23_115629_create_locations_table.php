@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('locations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('parking_id');
-            $table->string('address_name')->unique();
-            $table->string('latitude');
-            $table->string('longitude');
+            $table->string('location_name')->unique();
+            $table->double('latitude');
+            $table->double('longitude');
             $table->timestamps();
             $table->softDeletes();
         });

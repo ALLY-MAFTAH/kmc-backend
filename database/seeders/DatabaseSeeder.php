@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleUserSeeder::class);
         $this->call(OwnerSeeder::class);
         $this->call(WardSeeder::class);
+        $this->call(StreetSeeder::class);
         $this->call(ParkingSeeder::class);
         $this->call(VehicleSeeder::class);
         $this->call(StickerSeeder::class);

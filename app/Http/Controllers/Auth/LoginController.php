@@ -64,16 +64,19 @@ class LoginController extends Controller
                     'user' => $user,
                     'access_token' => $token->accessToken,
                     'token_type' => 'Bearer',
+                    'status' => 1,
                 ]);
+            } else {
+                return response()->json([
+                    'error' =>  'Email or Password Not Correct',
+                    'status' => 1,
+                ], 401);
             }
-
-            return response()->json([
-                'error' =>  'Email or Password Not Correct',
-            ], 401);
         } catch (\Throwable $th) {
             return response()->json([
                 'error' => $th->getMessage(),
-            ], 401);
+                'status' => 2,
+            ], 404);
         }
     }
 }

@@ -14,7 +14,13 @@ class WardController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            $wards = Ward::where('status', true)->get();
+
+            return response()->json(['wards' => $wards, 'status' => 1], 200);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage(), 'status'=> 0], 404);
+        }
     }
 
     /**
