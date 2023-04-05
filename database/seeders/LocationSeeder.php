@@ -21,8 +21,6 @@ class LocationSeeder extends Seeder
                 'location_name' => "Manzese Darajani",
                 'latitude' => -6.789574387903087,
                 'longitude' => 39.231051196545415,
-
-
             ],
             [
                 'parking_id' => 2,
