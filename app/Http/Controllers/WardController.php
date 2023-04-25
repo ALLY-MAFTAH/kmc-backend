@@ -2,8 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\LogActivityHelper;
+use App\Models\Business;
+use App\Models\Parking;
+use App\Models\Province;
+use App\Models\Source;
+use App\Models\SubWard;
+use App\Models\Vehicle;
 use App\Models\Ward;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class WardController extends Controller
 {
@@ -14,78 +22,97 @@ class WardController extends Controller
      */
     public function index()
     {
+        $vehicles = Vehicle::all();
+        $parkings = Parking::all();
+        $provinces = Province::where('status', 1)->orderBy('name')->get();
+        $wards = Ward::orderBy('name')->get();
+        return view('wards.index', compact('wards', 'parkings', 'provinces', 'vehicles'));
+    }
+    public function showWard(Request $request, Ward $ward)
+    {
+        $vehicles = Vehicle::all();
+        $parkings = Parking::all();
+        return view('wards.show', compact('ward', 'vehicles','parkings'));
+    }
+    public function postWard(Request $request)
+    {
+        $province = Province::findOrFail($request->province_id);
         try {
-            $wards = Ward::where('status', true)->get();
 
-            return response()->json(['wards' => $wards, 'status' => 1], 200);
+            $attributes = $this->validate($request, [
+                'name' => 'required |unique:wards,name,except,id',
+                'province_id' => 'required',
+            ]);
+
+            $attributes['status'] = true;
+            $attributes['description'] = $request->description ?? "";
+            $ward = Ward::create($attributes);
+            $province->wards()->save($ward);
+
+            LogActivityHelper::addToLog('Added ward ' . $ward->name);
+
+            alert()->success('You have successful added ward');
         } catch (\Throwable $th) {
-            return response()->json(['error' => $th->getMessage(), 'status'=> 0], 404);
+            alert()->error($th->getMessage());
         }
+        return Redirect::back();
+    }
+    public function putWard(Request $request, Ward $ward)
+    {
+        try {
+            $attributes = $this->validate($request, [
+                'name' => 'required |unique:wards,name,' . $ward->id
+            ]);
+
+            $attributes['description'] = $request->description ?? "";
+            $ward->update($attributes);
+            LogActivityHelper::addToLog('Updated ward ' . $ward->name);
+
+            alert()->success('You have successful edited ward');
+        } catch (\Throwable $th) {
+            alert()->error($th->getMessage());
+        }
+        return redirect()->back();
+    }
+    public function toggleStatus(Request $request, Ward $ward)
+    {
+        try {
+            $attributes = $this->validate($request, [
+                'status' => ['required', 'boolean'],
+            ]);
+
+            $ward->update($attributes);
+            LogActivityHelper::addToLog('Switched ward ' . $ward->name . ' status ');
+
+            alert()->success('You have successfully updated ward status');
+        } catch (\Throwable $th) {
+            alert()->error($th->getMessage());
+        }
+        return back();
+    }
+    public function deleteWard(Ward $ward)
+    {
+        try {
+            $itsName = $ward->name;
+            $ward->delete();
+            LogActivityHelper::addToLog('Deleted ward ' . $itsName);
+
+            alert()->success('You have successful deleted ' . $itsName . '.');
+        } catch (\Throwable $th) {
+            alert()->error($th->getMessage());
+        }
+        return back();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getWards(Request $request)
     {
-        //
-    }
+        $filteredWards = Ward::where(['status' => 1, 'province_id' => $request->provinceId])->orderBy('name')->get();
+        $options = '';
+        $options .= '<option value="">' . "--" . '</option>';
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Ward  $ward
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Ward $ward)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Ward  $ward
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Ward $ward)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Ward  $ward
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Ward $ward)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Ward  $ward
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Ward $ward)
-    {
-        //
+        foreach ($filteredWards as $ward) {
+            $options .= '<option value="' . $ward->id . '">' . $ward->name . '</option>';
+        }
+        return response()->json(['filteredWards' => $options]);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\ParkingController;
 use App\Http\Controllers\StreetController;
 use App\Http\Controllers\VehicleController;
@@ -41,3 +42,9 @@ Route::post('/add-ward', [WardController::class,'postWard']);
 // STREETS ROUTES
 Route::get('/streets', [StreetController::class,'index']);
 Route::post('/add-ward', [StreetController::class,'postStreet']);
+
+// OWNERS ROUTES
+Route::get('/owners', [OwnerController::class,'index']);
+Route::post('/register-owner', [OwnerController::class,'postOwner']);
+Route::get('owner/photo/{ownerId}', [OwnerController::class,'viewOwnerPhoto']);
+

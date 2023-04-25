@@ -19,22 +19,22 @@ class StreetSeeder extends Seeder
             [
                 'name' => "Tegeta A",
                 'status' => true,
-                'ward_id' => 1
+                'sub_ward_id' => 1
             ],
             [
                 'name' => "Tegeta B",
                 'status' => true,
-                'ward_id' => 1
+                'sub_ward_id' => 1
             ],
             [
                 'name' => "Goba Njia Nne",
                 'status' => true,
-                'ward_id' => 2
+                'sub_ward_id' => 2
             ],
             [
                 'name' => "Goba Center",
                 'status' => true,
-                'ward_id' => 2
+                'sub_ward_id' => 2
             ],
 
         ])->each(function ($street) {

@@ -8,24 +8,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Street extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory,SoftDeletes;
 
-    protected $fillable = [
+    protected $fillable=[
         'name',
-        'ward_id',
         'status',
-    ];
-    protected $dates = [
-        'deleted_at',
+        'sub_ward_id',
+        'description',
     ];
 
-    public function parkings()
-    {
-        return $this->hasMany(Parking::class);
+    protected $dates=[
+        'deleted_at'
+    ];
+
+    public function subWard(){
+        return $this->belongsTo(SubWard::class);
     }
-    public function ward()
-    {
-        return $this->belongsTo(Ward::class,'ward_id');
+
+    public function parkings(){
+        return $this->hasMany(Parking::class);
     }
 }

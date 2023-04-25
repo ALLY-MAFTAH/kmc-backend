@@ -14,6 +14,7 @@ class Vehicle extends Model
     protected $fillable = [
         'reg_number',
         'owner_id',
+        'driver_id',
         'parking_id',
         'type',
         'brand',
@@ -29,6 +30,10 @@ class Vehicle extends Model
     {
         return  $this->belongsTo(Owner::class, 'owner_id');
     }
+    public function driver()
+    {
+        return  $this->belongsTo(Driver::class, 'driver_id');
+    }
     public function parking()
     {
         return  $this->belongsTo(Parking::class, 'parking_id');
@@ -36,5 +41,13 @@ class Vehicle extends Model
     public function stickers()
     {
         return  $this->hasMany(Sticker::class);
+    }
+    public function payments()
+    {
+        return  $this->hasMany(Payment::class);
+    }
+    public function alerts()
+    {
+        return  $this->hasMany(Alert::class);
     }
 }

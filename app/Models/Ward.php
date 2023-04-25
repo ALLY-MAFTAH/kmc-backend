@@ -8,23 +8,28 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ward extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory,SoftDeletes;
 
-    protected $fillable = [
+    protected $fillable=[
         'name',
         'status',
-    ];
-    protected $dates = [
-        'deleted_at',
+        'province_id',
+        'description',
     ];
 
-    public function parkings()
-    {
-        return $this->hasMany(Parking::class);
+    protected $dates=[
+        'deleted_at'
+    ];
+
+    public function province(){
+        return $this->belongsTo(Province::class);
     }
-    public function streets()
-    {
-        return $this->hasMany(Street::class);
+
+    public function subWards(){
+        return $this->hasMany(SubWard::class);
+    }
+
+    public function businesses(){
+        return $this->hasMany(Business::class);
     }
 }

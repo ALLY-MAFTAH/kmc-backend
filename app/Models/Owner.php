@@ -17,6 +17,7 @@ class Owner extends Model
         'first_name',
         'middle_name',
         'last_name',
+        'photo',
     ];
 
     protected $dates=[

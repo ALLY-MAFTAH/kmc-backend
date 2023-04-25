@@ -22,6 +22,7 @@ return new class extends Migration
             $table->double('no_of_vehicles');
             $table->string('leader_mobile');
             $table->string('leader_name');
+            $table->string('leader_photo')->nullable();
             $table->boolean('status');
             $table->string('name')->nullable();
             $table->timestamps();

@@ -1,0 +1,87 @@
+html {
+    /* height: 100%; */
+    background-size: cover;
+}
+
+body {
+    background: linear-gradient(0deg, rgba(51, 163, 228, 0.832), rgba(44, 135, 240, 0.832)), url("../images/flag.jpg");
+    background-size: cover;
+    background-position: center center;
+    /* background-repeat: no-repeat; */
+    animation: flag 10s infinite;
+}
+
+@keyframes flag {
+    0% {
+        background-position: center bottom;
+    }
+
+    25% {
+        background-position: center right;
+    }
+
+    50% {
+        background-position: center top;
+    }
+
+    75% {
+        background-position: center left;
+    }
+
+    100% {
+        background-position: center bottom;
+    }
+}
+
+.brand-name {
+    padding-top: 20px;
+    font-size: 35px;
+    color: white;
+    text-shadow: 1px 1px rgb(84, 49, 6);
+    font-weight: bold;
+    animation: bounce 15s infinite;
+
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(-100px);
+    }
+}
+
+.card {
+    box-shadow: 3px 3px rgb(84, 49, 6);
+    width: 18em;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2' viewBox='0 0 10 10'%3E%3Crect fill='%23ccc' x='0' y='0' width='10' height='10'/%3E%3Ccircle fill='%23000fff' cx='5' cy='5' r='2'/%3E%3C/svg%3E");
+
+}
+
+.card:hover {
+    box-shadow: 3px 3px white;
+    /* width: 18.5em; */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2' viewBox='0 0 10 10'%3E%3Crect fill='%23000fff' x='0' y='0' width='10' height='10'/%3E%3Ccircle fill='%23ccc' cx='5' cy='5' r='2'/%3E%3C/svg%3E");
+    color: white;
+}
+
+.name {
+    text-shadow: 1px 1px rgba(26, 22, 17, 0.281);
+    font-weight: bold;
+    color: rgb(84, 49, 6);
+    padding-bottom: 0px;
+    font-size: 30px;
+}
+
+.list {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
+    row-gap: 25px;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 5px;
+    /* add some space between the cards */
+}

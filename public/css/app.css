@@ -1,0 +1,180 @@
+:root {
+    --main-color: #048df5;
+}
+
+.main-banner {
+    background-color: var(--main-color);
+    /* height: 200px; */
+}
+
+.banner-img {
+    background: linear-gradient(90deg, #048df5, #048df598, rgba(119, 187, 210, 0)), url("../images/banner.jpg");
+    height: 60px;
+    background-size: cover;
+}
+
+.banner-2 {
+    background-image: linear-gradient(180deg, #048df5, #e9eaef);
+    height: 20px;
+}
+
+.brand-name {
+    position: absolute;
+    font-size: 35px;
+    color: rgb(64, 42, 42);
+    text-shadow: 1px 1px white;
+    font-weight: bold;
+    margin-left: 85px;
+    padding-top: 10px;
+}
+
+.app-name {
+    font-size: 20px;
+    color: white;
+    text-shadow: 1px 1px 1px rgb(28, 55, 61);
+    font-weight: bold;
+}
+
+.side-menyu {
+    background-color: rgb(4, 55, 57);
+}
+
+/* Sidebar */
+.mdc-drawer {
+    background: linear-gradient(#9c825d, rgb(33, 29, 29), var(--main-color));
+    position: fixed;
+}
+
+.table-head {
+    background: linear-gradient(90deg, rgba(128, 63, 10, 0.226), rgba(31, 92, 145, 0.21), rgba(31, 92, 145, 0.21), rgba(31, 92, 145, 0.21), rgba(31, 92, 145, 0.21), rgba(31, 92, 145, 0.21), rgba(128, 63, 10, 0.2262));
+    box-shadow: #090505;
+}
+
+table th:first-child {
+    border-radius: 5px 0 0 0;
+}
+
+table th:last-child {
+    border-radius: 0 5px 0 0;
+}
+
+
+.swal2-popup {
+    font-size: 8px !important;
+    font-family: "Roboto", sans-serif !important;
+    color: #022845 !important;
+    padding-bottom: 8px !important;
+    position: absolute;
+    bottom: 50%;
+}
+
+.swal2-title {
+    font-weight: normal !important;
+    font-family: "Roboto", sans-serif !important;
+}
+
+.swal2-actions {
+    font-size: 10px !important;
+    font-family: "Roboto", sans-serif !important;
+}
+
+div.form-switch:focus,
+textarea:focus,
+/* a.btn.btn-sm:focus, */
+button.btn:focus,
+/* button.btn.btn-sm:focus, */
+textarea.form-control:focus,
+input.form-control:focus,
+select.form-control:focus,
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+input[type=number]:focus,
+[type=text].form-control:focus,
+[type=password].form-control:focus,
+[type=email].form-control:focus,
+[type=tel].form-control:focus,
+[contenteditable].form-control:focus {
+    box-shadow: inset 0 -1px 0 #ddd;
+}
+
+datalist {
+    background-color: blue;
+}
+
+datalist option {
+    color: white;
+    font-size: 18px;
+    padding: 5px;
+}
+
+.contactBtn {
+    background: linear-gradient(45deg, #0a6ced, #2d3b41);
+    color: #fff;
+    border: none;
+    display: flex;
+    align-items: center;
+    border-radius: 25px;
+    justify-content: center;
+    text-align: center;
+    padding: 5px;
+    width: 130px;
+    -webkit-box-shadow: 0px 10px 41px -11px rgba(0, 0, 0, 0.7);
+    -moz-box-shadow: 0px 10px 41px -11px rgba(0, 0, 0, 0.7);
+    box-shadow: 0px 10px 41px -11px rgba(0, 0, 0, 0.7);
+}
+
+.contactBtn i {
+    margin-right: 5px;
+}
+
+
+.showMapBtn {
+    border: none;
+    justify-content: center;
+    text-align: center;
+    display: flex;
+}
+
+.showMapBtn i {
+    margin-right: 5px;
+}
+
+.contactBtn:hover {
+    background: linear-gradient(45deg, #5396ee, white, #8ddbf7);
+    color: black;
+}
+
+.leftProfSide {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.valid-label {
+    border-radius: 0px;
+    color: green;
+    width: 100px;
+    border: solid 1px green;
+    background-color: rgba(169, 240, 159, 0.678);
+}
+
+.invalid-label {
+    border-radius: 0px;
+    color: red;
+    width: 100px;
+    border: solid 1px red;
+    background-color: rgba(238, 152, 152, 0.658);
+}
+
+.text-center form,
+.text-center a {
+    display: inline-block;
+}
+
+.latest-tr {
+    background-color: #eed40c1f !important;
+    border: 1px dotted #022845 !important;
+}

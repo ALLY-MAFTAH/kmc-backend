@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Owner;
+use App\Models\Parking;
+use App\Models\Vehicle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as REQ;
+use Illuminate\Support\Facades\Validator;
 
 class OwnerController extends Controller
 {
@@ -12,74 +16,79 @@ class OwnerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
+        $owners = Owner::all();
+        $vehicles = Vehicle::all();
+        $parkings = Parking::all();
+        if (REQ::is('api/*'))
+            return response()->json([
+                'owners' => $owners,
+                'status' => true
+            ], 200);
+        return view('owners.index',compact('owners','vehicles','parkings'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function postOwner(Request $request)
     {
-        //
+        $photoPath = null;
+
+        // Validate if the request sent contains this parameters
+        $validator = Validator::make($request->all(), [
+            'nida' => 'required',
+            'mobile' => 'required',
+            'first_name' => 'required',
+            'middle_name' => 'required',
+            'last_name' => 'required',
+            'photo' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'error' => $validator->errors()->getMessageBag(),
+                'status' => false
+            ], 401);
+        }
+
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->storeAs(
+                config('app.name') . '/IMAGES/',
+                $request->first_name . $request->last_name . '.' . $request->file('photo')->getClientOriginalExtension(),
+                'public'
+            );
+        } else $photoPath = "";
+
+        $owner = new Owner();
+        $owner->first_name = $request->input('first_name');
+        $owner->middle_name = $request->input('middle_name') ?? "";
+        $owner->last_name = $request->input('last_name');
+        $owner->mobile = $request->input('mobile');
+        $owner->nida = $request->input('nida');
+        $owner->photo = $photoPath;
+
+        $owner->save();
+        if (REQ::is('api/*'))
+            return response()->json([
+                'owner' => $owner
+            ], 201);
+        return back()->with('success', 'Qwner registered successfully');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function viewOwnerPhoto($ownerId)
     {
-        //
-    }
+        try {
+            $owner = Owner::find($ownerId);
+            if (!$owner) {
+                return response()->json([
+                    'error' => 'Owner not found'
+                ], 404);
+            }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Owner  $owner
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Owner $owner)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Owner  $owner
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Owner $owner)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Owner  $owner
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Owner $owner)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Owner  $owner
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Owner $owner)
-    {
-        //
+            $pathToFile = storage_path('/app/public/' . $owner->photo);
+            return response()->download($pathToFile);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => $th->getMessage()], 404);
+        }
     }
 }

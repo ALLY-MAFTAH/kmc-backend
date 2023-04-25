@@ -22,6 +22,7 @@ class OwnerSeeder extends Seeder
                 'last_name' => "Ally",
                 'mobile' => "0714871033",
                 'nida' => "199602172121000020",
+                'photo' => "--------------------",
 
             ],
 
@@ -31,6 +32,7 @@ class OwnerSeeder extends Seeder
                 'last_name' => "Mwakipasile",
                 'mobile' => "0620650411",
                 'nida' => "199602172121000023",
+                'photo' => "--------------------",
 
             ],
 

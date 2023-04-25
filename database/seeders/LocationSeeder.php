@@ -28,8 +28,6 @@ class LocationSeeder extends Seeder
                 'latitude' => -6.7967465485235925,
                 'longitude' => 39.23782832538122,
             ],
-
-
         ])->each(function ($location) {
             Location::create($location);
         });
