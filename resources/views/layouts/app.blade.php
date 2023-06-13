@@ -14,17 +14,17 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="../assets/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/mdi/css/materialdesignicons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/css/vendor.bundle.base.css') }}">
 
-    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css"> --}}
-    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap5.min.css">
-    <link rel="stylesheet" href="../assets/vendors/flag-icon-css/css/flag-icon.min.css">
-    <link rel="stylesheet" href="../assets/vendors/jvectormap/jquery-jvectormap.css">
-    <link rel="stylesheet" href="../assets/css/demo/style.css">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/flag-icon-css/css/flag-icon.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendors/jvectormap/jquery-jvectormap.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/demo/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     {{-- DATA TABLE --}}
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.0/css/responsive.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.2/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.4/css/buttons.bootstrap5.min.css">
@@ -70,6 +70,55 @@
                                     Dashboard
                                 </a>
                             </div>
+
+
+                            <div class="mdc-list-item mdc-drawer-item">
+                                <a class="mdc-drawer-link {{ request()->routeIs('vehicles.show') || request()->routeIs('vehicles.show_add_form') ? 'active' : '' }}"
+                                    href="{{ route('vehicles.index') }}">
+                                    <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                                        aria-hidden="true">motorcycle</i>
+                                    Vehicles
+                                </a>
+                            </div>
+                            <div class="mdc-list-item mdc-drawer-item">
+                                <a class="mdc-drawer-link {{ request()->routeIs('parkings.show') ? 'active' : '' }}"
+                                    href="{{ route('parkings.index') }}">
+                                    <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                                        aria-hidden="true">local_parking</i>
+                                    Parkings
+                                </a>
+                            </div>
+                            <div class="mdc-list-item mdc-drawer-item">
+                                <a class="mdc-drawer-link {{ request()->routeIs('owners.show') || request()->routeIs('owners.show_add_form') ? 'active' : '' }}"
+                                    href="{{ route('owners.index') }}">
+                                    <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                                        aria-hidden="true">person</i>
+                                    Owners
+                                </a>
+                            </div>
+                            <div class="mdc-list-item mdc-drawer-item">
+                                <a class="mdc-drawer-link {{ request()->routeIs('drivers.show') || request()->routeIs('drivers.show_add_form') ? 'active' : '' }}"
+                                    href="{{ route('drivers.index') }}">
+                                    <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                                        aria-hidden="true">people_outline</i>
+                                    Drivers
+                                </a>
+                            </div>
+                            <div class="mdc-list-item mdc-drawer-item">
+                                <a class="mdc-drawer-link {{ request()->routeIs('stickers.show') ? 'active' : '' }}"
+                                    href="{{ route('stickers.index') }}">
+                                    <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                                        aria-hidden="true">receipt</i>
+                                    Stickers
+                                </a>
+                            </div>
+                            <div class="mdc-list-item mdc-drawer-item">
+                                <a class="mdc-drawer-link" href="{{ route('payments.index') }}">
+                                    <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
+                                        aria-hidden="true">attach_money</i>
+                                    Payments
+                                </a>
+                            </div>
                             <div class="mdc-list-item mdc-drawer-item">
                                 <a class="mdc-expansion-panel-link {{ request()->routeIs('provinces.show') || request()->routeIs('wards.show') || request()->routeIs('sub_wards.show') || request()->routeIs('streets.show') ? 'expanded' : '' }}"
                                     href="#" data-toggle="expansionPanel" data-target="divisions">
@@ -110,59 +159,13 @@
                                 </div>
                             </div>
                             <div class="mdc-list-item mdc-drawer-item">
-                                <a class="mdc-drawer-link {{ request()->routeIs('owners.show') || request()->routeIs('owners.show_add_form') ? 'active' : '' }}"
-                                    href="{{ route('owners.index') }}">
-                                    <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
-                                        aria-hidden="true">person</i>
-                                    Owners
-                                </a>
-                            </div>
-                            <div class="mdc-list-item mdc-drawer-item">
-                                <a class="mdc-drawer-link {{ request()->routeIs('drivers.show') || request()->routeIs('drivers.show_add_form') ? 'active' : '' }}"
-                                    href="{{ route('drivers.index') }}">
-                                    <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
-                                        aria-hidden="true">people_outline</i>
-                                    Drivers
-                                </a>
-                            </div>
-                            <div class="mdc-list-item mdc-drawer-item">
-                                <a class="mdc-drawer-link {{ request()->routeIs('vehicles.show') || request()->routeIs('vehicles.show_add_form') ? 'active' : '' }}"
-                                    href="{{ route('vehicles.index') }}">
-                                    <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
-                                        aria-hidden="true">motorcycle</i>
-                                    Vehicles
-                                </a>
-                            </div>
-                            <div class="mdc-list-item mdc-drawer-item">
-                                <a class="mdc-drawer-link {{ request()->routeIs('parkings.show') ? 'active' : '' }}"
-                                    href="{{ route('parkings.index') }}">
-                                    <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
-                                        aria-hidden="true">local_parking</i>
-                                    Parkings
-                                </a>
-                            </div>
-                            <div class="mdc-list-item mdc-drawer-item">
-                                <a class="mdc-drawer-link {{ request()->routeIs('stickers.show') ? 'active' : '' }}"
-                                    href="{{ route('stickers.index') }}">
-                                    <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
-                                        aria-hidden="true">receipt</i>
-                                    Stickers
-                                </a>
-                            </div>
-                            <div class="mdc-list-item mdc-drawer-item">
-                                <a class="mdc-drawer-link" href="{{ route('payments.index') }}">
-                                    <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
-                                        aria-hidden="true">attach_money</i>
-                                    Payments
-                                </a>
-                            </div>
-                            <div class="mdc-list-item mdc-drawer-item">
                                 <a class="mdc-drawer-link" href="{{ route('reports.index') }}">
                                     <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
                                         aria-hidden="true">insert_drive_file</i>
                                     Reports
                                 </a>
                             </div>
+
                             <div class="mdc-list-item mdc-drawer-item">
                                 <a class="mdc-expansion-panel-link" href="#" data-toggle="expansionPanel"
                                     data-target="users_roles">
@@ -480,6 +483,58 @@
             });
             table.buttons().container()
                 .appendTo('#data-tebo1_wrapper .col-md-6:eq(0)');
+
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            var table = $('#data-tebo2').DataTable({
+                dom: "<'row'<'col-sm-12 col-md-6'B><'col-sm-12 col-md-6'f>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                    "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+                lengthChange: true,
+                columnDefs: [{
+                    visible: true,
+                    targets: '_all'
+                }, ],
+                buttons: [{
+                        extend: 'print',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        messageTop: 'DATAAAAAAAAAA'
+
+                    },
+                    {
+                        extend: 'pdf',
+                        exportOptions: {
+                            columns: ':visible'
+                        },
+                        margin: [20, 20, 20, 20],
+                        padding: [20, 20, 20, 20],
+                        customize: function(doc) {
+                            doc.content[1].table.widths = Array(doc.content[1].table.body[0]
+                                .length + 1).join('*').split('');
+                            doc.content[1].table.widths[0] = 'auto';
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    'colvis'
+                ]
+            });
+            table.buttons().container()
+                .appendTo('#data-tebo2_wrapper .col-md-6:eq(0)');
 
         });
     </script>

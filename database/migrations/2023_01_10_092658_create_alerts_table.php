@@ -16,10 +16,12 @@ return new class extends Migration
         Schema::create('alerts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->date('date');
-            $table->string('msg');
+            $table->longText('msg');
+            $table->string('mobile');
             $table->string('category');
-            $table->integer('sticker_id');
-            $table->integer('vehicle_id');
+            $table->integer('owner_id')->nullable();
+            $table->integer('driver_id')->nullable();
+            $table->integer('parking_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

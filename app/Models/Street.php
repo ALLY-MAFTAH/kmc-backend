@@ -22,7 +22,7 @@ class Street extends Model
     ];
 
     public function subWard(){
-        return $this->belongsTo(SubWard::class);
+        return $this->belongsTo(SubWard::class,'sub_ward_id');
     }
 
     public function parkings(){

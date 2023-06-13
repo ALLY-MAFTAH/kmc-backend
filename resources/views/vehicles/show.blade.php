@@ -1,112 +1,83 @@
 @extends('layouts.app')
 
 @section('title')
-    Vehicle Firms
+    Vehicle
 @endsection
 
 @section('content')
     <div class="page-wrapper mdc-toolbar-fixed-adjust">
         <main class="content-wrapper px-2">
             <div class="row">
-                <div class="col-md-8 pb-2">
+                <div class="col-md-6 pb-2">
                     <div class="card shadow px-2 pt-3">
                         <div class="row">
-                            <div class="col-3 leftProfSide">
-                                <div class=" ml-2"
-                                    style="width: 130px; height: 130px; overflow: hidden; border-radius: 50%; border: 1px solid rgb(0, 132, 255);">
-                                    {{-- <img src="{{ asset('../images/logo.png') }}" alt="Profile Image" style="width: 100%;"> --}}
-                                    <i class="material-icons"
-                                        style="font-size: 130px;color:rgb(179, 177, 177);width:100%">account_circle</i>
-                                </div>
-
-                                <div class="contBtns pt-3 ml-2">
-                                    <button href="#" data-bs-toggle="modal"
-                                        data-bs-target="#emailModal-{{ $vehicle->id }}" class="mb-2 text-center contactBtn"
-                                        type="button"><i class="material-icons" style="">email</i>EMAIL</button>
-                                    <button href="#" data-bs-toggle="modal"
-                                        data-bs-target="#messageModal-{{ $vehicle->id }}" class=" text-center contactBtn"
-                                        type="button"><i class="material-icons" style="">message</i>MESSAGE</button>
-                                </div>
-                            </div>
-                            <div class="col-9">
+                            <div class="col-1 leftProfSide"> </div>
+                            <div class="col-10">
                                 <div class="row">
-                                    <div class="col-3">
-                                        <h5 class="my-0">
-                                            <span style="color:rgb(188, 186, 186)">Brand: </span>
-                                        </h5>
-                                    </div>
-                                    <div class="col-9">
-                                        <h5 class="my-0" style="color:rgb(3, 3, 87)">
-                                            <small>{{ Illuminate\Support\Str::upper($vehicle->brand) }}</small>
-                                        </h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-3">
+                                    <div class="col-5">
                                         <h5 class="my-0">
                                             <span style="color:rgb(188, 186, 186)">Reg. Number: </span>
                                         </h5>
                                     </div>
                                     <div class="col-7">
                                         <h5 class="my-0" style="color:rgb(3, 3, 87)">
-                                            <small>{{ $vehicle->reg_number }}</small>
+                                            <span>{{ $vehicle->reg_number }}</span>
                                         </h5>
                                     </div>
-                                    <div class="col-2 text-center">
-                                        <a href=""data-bs-toggle="modal"
-                                            data-bs-target="#edit_vehicle_modal-{{ $vehicle->id }}"><i
-                                                class="material-icons">edit</i></a>
-                                    </div>
+
                                 </div>
                                 <hr style="margin-top: 5px;margin-bottom: 5px;">
                                 <div class="row">
-                                    <div class="col-3 pb-3">
-                                        <h6 class="my-0">
+                                    <div class="col-5 pb-3">
+                                        <h5 class="my-0">
+                                            <div style="color:rgb(188, 186, 186)">Brand: </div>
                                             <div style="color:rgb(188, 186, 186)">Type: </div>
                                             <div style="color:rgb(188, 186, 186)">Color: </div>
-                                            {{-- <div style="color:rgb(188, 186, 186)">NIDA: </div>
-                                            <div style="color:rgb(188, 186, 186)">Email: </div>
-                                            <div style="color:rgb(188, 186, 186)">Mobile: </div>
-                                            <div style="color:rgb(188, 186, 186)">Address: </div> --}}
-                                        </h6>
+                                            <div style="color:rgb(188, 186, 186)">PLN: </div>
+                                            <div style="color:rgb(188, 186, 186)">Driver: </div>
+                                            <div style="color:rgb(188, 186, 186)">Owner: </div>
+                                        </h5>
                                     </div>
-                                    <div class="col-9">
-                                        <h6 class="my-0">
+                                    <div class="col-7">
+                                        <h5 class="my-0">
+                                            <div>{{ $vehicle->brand }}</div>
                                             <div>{{ $vehicle->type }}</div>
                                             <div>{{ $vehicle->color }}</div>
-                                            {{-- <div>{{ $vehicle->nida }}</div>
-                                            <div>{{ $vehicle->email }}</div>
-                                            <div>{{ $vehicle->mobile }}</div>
-                                            <div>{{ $vehicle->address }}</div> --}}
-                                        </h6>
-                                    </div>
-                                </div>
-
-                                <div class="row pb-3">
-                                    <div class="col-3">
-                                        <h6 class="my-0">
-                                            <div style="color:rgb(188, 186, 186)">Parking No: </div>
-                                        </h6>
-                                    </div>
-                                    <div class="col-5">
-                                        <h6 class="my-0">
                                             <div>{{ $vehicle->parking->pln }}</div>
-                                        </h6>
+                                            @if ($vehicle->driver)
+                                                <div>{{ $vehicle->driver->first_name }} {{ $vehicle->driver->middle_name }}
+                                                    {{ $vehicle->driver->last_name }}</div>
+                                            @else
+                                                <div class="text-danger">
+                                                    Not Assigned
+                                                </div>
+                                            @endif
+                                            @if ($vehicle->owner)
+                                                <div>{{ $vehicle->owner->first_name }} {{ $vehicle->owner->middle_name }}
+                                                    {{ $vehicle->owner->last_name }}</div>
+                                            @else
+                                                <div class="text-danger">
+                                                    Not Assigned
+                                                </div>
+                                            @endif
+
+                                        </h5>
+                                        <div class="pt-4">
+                                            <button href="#" data-bs-toggle="modal"style="width:150px"
+                                                data-bs-target="#edit_vehicle_modal-{{ $vehicle->id }}"
+                                                class=" text-center editBtn" type="button"><i
+                                                    class="material-icons">edit</i>EDIT</button>
+                                        </div><br>
                                     </div>
-                                    <div class="col-4">
-                                        <a href="#" data-bs-toggle="modal" style="text-decoration:none"
-                                            data-bs-target="#mapModal-{{ $vehicle->id }}" class=" text-center showMapBtn"
-                                            type="button"><i class="material-icons" style="">location_on</i>View
-                                            Map</a>
-                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 pb-2">
+                <div class="col-md-6 pb-2">
                     <div class="card shadow">
-                        <div class="text-center">Summary</div>
+                        <div class="card-header text-center">Summary</div>
                         <div class="row px-2 pt-2">
                             <div class="col text-center"style="border-right: 1px dashed #333;">
                                 <i class="material-icons" style="font-size: 40px;color:rgb(234, 20, 241)">receipt</i>
@@ -117,7 +88,7 @@
                                     STICKERS
                                 </div>
                             </div>
-                            <div class="col text-center"style="border-right: 1px dashed #333;">
+                            <div class="col text-center"style="">
                                 <i class="material-icons" style="font-size: 40px;color:rgb(32, 12, 251)">attach_money</i>
                                 <div class="">
                                     <b> {{ number_format($amount, 0, '.', ',') }}</b> TZS
@@ -126,7 +97,7 @@
                                     CONTRIBUTION
                                 </div>
                             </div>
-                            <div class="col text-center">
+                            {{-- <div class="col text-center">
                                 <i class="material-icons" style="font-size: 40px;color:rgb(244, 149, 7)">message</i>
                                 <div class="">
                                     <b> {{ $vehicle->alerts->count() }}</b>
@@ -134,21 +105,31 @@
                                 <div class="">
                                     MESSAGES
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                         <br>
-                        <div style="background-color: rgba(203, 205, 245, 0.514);">
-
-                            <div class="col text-center py-2">
-                                <b style="color:rgb(3, 3, 105)">CURRENT STICKER STATUS:
-                                    @if ($latestSticker->is_valid)
+                        @if ($latestSticker->is_valid)
+                            <div class="row mx-2"
+                                style="background-color: rgba(203, 205, 245, 0.514); display: flex; align-items: center;">
+                                <div class="col-7 text-center py-2">
+                                    <b style="color:rgb(3, 3, 105)">CURRENT STICKER STATUS:
                                         <label class="p-1 valid-label">VALID</label>
-                                    @else
-                                        <label class=" p-1 invalid-label">EXPIRED</label>
-                                    @endif
-                                </b>
+                                    </b>
+                                </div>
+                                <div class="col-5 pt-1 text-center" style="font-size: 12px; color: rgb(8, 8, 110)">
+                                    Expires on:
+                                    {{ Illuminate\Support\Carbon::parse($latestSticker->end_date)->format('d M, Y') }}
+                                </div>
                             </div>
-                        </div>
+                        @else
+                            <div class="row mx-2" style="background-color: rgba(203, 205, 245, 0.514);">
+                                <div class="col text-center py-2">
+                                    <b style="color:rgb(3, 3, 105)">CURRENT STICKER STATUS:
+                                        <label class=" p-1 invalid-label">EXPIRED</label>
+                                    </b>
+                                </div>
+                            </div>
+                        @endif
                         <div>
                             <div class="p-2">
                                 @if ($latestSticker->is_valid)
@@ -163,19 +144,15 @@
                                             role="progressbar" style="width: {{ $width }}%" aria-valuemin="0"
                                             aria-valuemax="365">
                                         </div>
-                                        <p
+                                        <p class=""
                                             style="color: orange; text-shadow: 0.5px 0.5px white; position: absolute; left: 50%; transform: translateX(-50%);">
                                             {{ $remainingDays }} days remaining</p>
-                                    </div>
-                                    <div style="font-size: 12px; color: rgb(8, 8, 110)" class="pt-1 text-center">Expires
-                                        on:
-                                        {{ Illuminate\Support\Carbon::parse($latestSticker->end_date)->format('d M, Y') }}
                                     </div>
                                 @else
                                     <div class="text-center">
 
-                                        <a href="#" class="btn btn-outline-primary btn-sm  collapsed"
-                                            type="button" data-bs-toggle="collapse" data-bs-target="#createNewSticker"
+                                        <a href="#" class="btn btn-outline-primary btn-sm  collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#createNewSticker"
                                             aria-expanded="false" aria-controls="createNewSticker">Create New Sticker</a>
                                     </div>
                                 @endif
@@ -276,6 +253,9 @@
             </div>
             <br>
             <div class="card">
+                <div class="card-header  text-center" style="font-size: 20px">
+                    Stickers
+                </div>
                 <div class="card-body">
                     <div class="table-responsive-lg">
                         <table id="data-tebo1"
@@ -288,6 +268,7 @@
                                     <th>End Date</th>
                                     <th class="text-center">Validity</th>
                                     <th>Receipt Number</th>
+                                    <th>PLN</th>
                                     <th class="text-left">Term</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
@@ -312,7 +293,10 @@
                                             @endif
                                         </td>
                                         <td>
-                                            {{-- {{ $sticker->payment->receipt_number }} --}}
+                                            {{ $sticker->payment->receipt_number }}
+                                        </td>
+                                        <td>
+                                            {{ $sticker->vehicle->parking->pln }}
                                         </td>
                                         <td class="text-left">
                                             @if ($index == 1)
@@ -339,19 +323,19 @@
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                           <br>
-                                                           <br>
-                                                           <br>
-                                                           <br>
-                                                           <br>
-                                                           <br>
-                                                           Document
-                                                           <br>
-                                                           <br>
-                                                           <br>
-                                                           <br>
-                                                           <br>
-                                                           <br>
+                                                            <br>
+                                                            <br>
+                                                            <br>
+                                                            <br>
+                                                            <br>
+                                                            <br>
+                                                            Document
+                                                            <br>
+                                                            <br>
+                                                            <br>
+                                                            <br>
+                                                            <br>
+                                                            <br>
 
                                                         </div>
                                                     </div>
@@ -363,7 +347,7 @@
                                                 aria-expanded="false" aria-controls="collapseTwo">
                                                 Edit
                                             </a>
-                                            <div class="modal modal-sm fade" id="editStickerModal-{{ $sticker->id }}"
+                                            <div class="modal modal-md fade" id="editStickerModal-{{ $sticker->id }}"
                                                 tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
@@ -378,78 +362,82 @@
                                                                 action="{{ route('stickers.edit', $sticker) }}">
                                                                 @method('PUT')
                                                                 @csrf
-                                                                <input hidden type="number" value="{{ $vehicle->id }}"
-                                                                    name="vehicle_id">
-                                                                <div class="text-start mb-1">
-                                                                    <label for="number"
-                                                                        class=" col-form-label text-sm-start">{{ __('Sticker Number') }}</label><span
-                                                                        class="text-danger"> *</span>
-                                                                    <div class="">
-                                                                        <input id="number" type="text"
-                                                                            placeholder=""
-                                                                            class="form-control @error('number') is-invalid @enderror"
-                                                                            name="number"
-                                                                            value="{{ old('number', $sticker->number) }}"
-                                                                            autocomplete="number" autofocus>
-                                                                        @error('number')
-                                                                            <span class="invalid-feedback" role="alert">
-                                                                                <strong>{{ $message }}</strong>
-                                                                            </span>
-                                                                        @enderror
+                                                                <div class="row">
+                                                                    <div class="text-start col mb-1">
+                                                                    <input hidden type="number"
+                                                                        value="{{ $vehicle->id }}" name="vehicle_id">
+                                                                        <label for="number"
+                                                                            class=" col-form-label text-sm-start">{{ __('Sticker Number') }}</label><span
+                                                                            class="text-danger"> *</span>
+                                                                        <div class="">
+                                                                            <input id="number" type="text"
+                                                                                placeholder=""
+                                                                                class="form-control @error('number') is-invalid @enderror"
+                                                                                name="number"
+                                                                                value="{{ old('number', $sticker->number) }}"
+                                                                                autocomplete="number" autofocus>
+                                                                            @error('number')
+                                                                                <span class="invalid-feedback" role="alert">
+                                                                                    <strong>{{ $message }}</strong>
+                                                                                </span>
+                                                                            @enderror
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="text-start col mb-1">
+                                                                        <label for="start_date"
+                                                                            class=" col-form-label text-sm-start">{{ __('Start Date') }}</label><span
+                                                                            class="text-danger"> *</span>
+                                                                        <div class="">
+                                                                            <input id="" type="date"
+                                                                                placeholder=""
+                                                                                class="form-control start_date @error('start_date') is-invalid @enderror"
+                                                                                name="start_date"
+                                                                                value="{{ old('start_date', $sticker->start_date) }}"
+                                                                                autocomplete="start_date" autofocus>
+                                                                            @error('start_date')
+                                                                                <span class="invalid-feedback" role="alert">
+                                                                                    <strong>{{ $message }}</strong>
+                                                                                </span>
+                                                                            @enderror
+                                                                        </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="text-start mb-1">
-                                                                    <label for="start_date"
-                                                                        class=" col-form-label text-sm-start">{{ __('Start Date') }}</label><span
-                                                                        class="text-danger"> *</span>
-                                                                    <div class="">
-                                                                        <input id="" type="date"
-                                                                            placeholder=""
-                                                                            class="form-control start_date @error('start_date') is-invalid @enderror"
-                                                                            name="start_date"
-                                                                            value="{{ old('start_date', $sticker->start_date) }}"
-                                                                            autocomplete="start_date" autofocus>
-                                                                        @error('start_date')
-                                                                            <span class="invalid-feedback" role="alert">
-                                                                                <strong>{{ $message }}</strong>
-                                                                            </span>
-                                                                        @enderror
+                                                                <div class="row">
+                                                                    <div class="text-start col mb-1">
+                                                                        <label for="end_date"
+                                                                            class=" col-form-label text-sm-start">{{ __('End Date') }}</label><span
+                                                                            class="text-danger"> *</span>
+                                                                        <div class="">
+                                                                            <input id="end_date" type="date"
+                                                                                placeholder=""
+                                                                                class="form-control end_date @error('end_date') is-invalid @enderror"
+                                                                                name="end_date"
+                                                                                value="{{ old('end_date', $sticker->end_date) }}"
+                                                                                autocomplete="end_date" autofocus>
+                                                                            @error('end_date')
+                                                                                <span class="invalid-feedback" role="alert">
+                                                                                    <strong>{{ $message }}</strong>
+                                                                                </span>
+                                                                            @enderror
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="text-start mb-1">
-                                                                    <label for="end_date"
-                                                                        class=" col-form-label text-sm-start">{{ __('End Date') }}</label><span
-                                                                        class="text-danger"> *</span>
-                                                                    <div class="">
-                                                                        <input id="end_date" type="date"
-                                                                            placeholder=""
-                                                                            class="form-control end_date @error('end_date') is-invalid @enderror"
-                                                                            name="end_date"
-                                                                            value="{{ old('end_date', $sticker->end_date) }}"
-                                                                            autocomplete="end_date" autofocus>
-                                                                        @error('end_date')
-                                                                            <span class="invalid-feedback" role="alert">
-                                                                                <strong>{{ $message }}</strong>
-                                                                            </span>
-                                                                        @enderror
-                                                                    </div>
-                                                                </div>
-                                                                <div class="text-start mb-1">
-                                                                    <label for="receipt_number"
-                                                                        class=" col-form-label text-sm-start">{{ __('Payment Receipt Number') }}</label>
-                                                                    <span class="text-danger"> *</span>
-                                                                    <div class="">
-                                                                        {{-- <input id="receipt_number" type="text"
-                                                                            placeholder=""
-                                                                            class="form-control @error('receipt_number') is-invalid @enderror"
-                                                                            name="receipt_number"
-                                                                            value="{{ old('receipt_number', $sticker->payment->receipt_number) }}"
-                                                                            autocomplete="receipt_number" autofocus> --}}
-                                                                        @error('receipt_number')
-                                                                            <span class="invalid-feedback" role="alert">
-                                                                                <strong>{{ $message }}</strong>
-                                                                            </span>
-                                                                        @enderror
+                                                                    <div class="text-start col mb-1">
+                                                                        <label for="receipt_number"
+                                                                            class=" col-form-label text-sm-start">{{ __('Payment Receipt Number') }}</label>
+                                                                        <span class="text-danger"> *</span>
+                                                                        <div class="">
+                                                                            <input id="receipt_number" type="text"
+                                                                                placeholder=""
+                                                                                class="form-control @error('receipt_number') is-invalid @enderror"
+                                                                                name="receipt_number"
+                                                                                value="{{ old('receipt_number', $sticker->payment->receipt_number) }}"
+                                                                                autocomplete="receipt_number" autofocus>
+                                                                            @error('receipt_number')
+                                                                                <span class="invalid-feedback" role="alert">
+                                                                                    <strong>{{ $message }}</strong>
+                                                                                </span>
+                                                                            @enderror
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row mb-1 mt-2">
@@ -556,8 +544,7 @@
                 </div>
             </div>
         </div>
-        <div class="modal modal-lg fade" id="edit_vehicle_modal-{{ $vehicle->id }}" tabindex="-1"
-            aria-hidden="true">
+        <div class="modal modal-lg fade" id="edit_vehicle_modal-{{ $vehicle->id }}" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

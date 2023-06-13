@@ -12,7 +12,7 @@ class MessagingService
     /**
      * Send SMS through Next SMS API
      *
-     * @param object $receiver
+     * @param string $receiver
      * @param string $body
      *
      * @return \Illuminate\Http\Client\Response|null
@@ -21,7 +21,8 @@ class MessagingService
     {
         $from = 'NEXTSMS';
         $text = $body;
-        $to = str_replace('+', '', $receiver->mobile);
+        $to = substr_replace($receiver, "255", 0, 1);
+
         try {
             $messageResponse = Http::withToken(config('services.nextsms.key'), 'Basic')
                 ->asJson()
@@ -31,9 +32,15 @@ class MessagingService
                     compact('from', 'to', 'text')
                 );
             $response = $messageResponse->successful() ? 'Sent' : 'Failed';
-            return $response;
+            return [
+                'status' =>  $response,
+                'mobile' =>  $to,
+                'msg' =>  $text,
+            ];
         } catch (\Throwable $th) {
-            return $th->getMessage();
+            return [
+                'status' =>   $th->getMessage(),
+            ];
         }
     }
 }

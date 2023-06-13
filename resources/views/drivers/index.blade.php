@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-Drivers
+    Drivers
 @endsection
 @section('content')
     <div class="page-wrapper mdc-toolbar-fixed-adjust">
@@ -27,9 +27,7 @@ Drivers
                             <a href="#" class="btn  btn-outline-primary collapsed" type="button"
                                 data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false"
                                 aria-controls="collapseTwo">
-
                                 <i class="feather icon-plus"></i> Add New Driver
-
                             </a>
                         </div>
                     </div>
@@ -39,35 +37,19 @@ Drivers
                         aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <div class="card mb-1 p-2" style="background: var(--form-bg-color)">
-                                <form method="POST" action="{{ route('drivers.add') }}">
+                                <form method="POST" action="{{ route('drivers.add') }}" enctype="multipart/form-data">
                                     @csrf
                                     <div class="row">
                                         <div class="col mb-1">
-                                            <label for="role_id" class=" col-form-label text-sm-start">{{ __('Role') }}</label> <span class="text-danger"> *</span>
-                                            {{-- <select id="role_id" type="text"
-                                                class="form-control form-select @error('role_id') is-invalid @enderror"
-                                                name="role_id" value="{{ old('role_id') }}" required autocomplete="role_id"
-                                                autofocus>
-                                                <option value="">Choose Role</option>
-                                                @foreach ($roles as $role)
-                                                    <option value="{{ $role->id }}">{{ $role->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select> --}}
-                                            @error('role_id')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
-                                        <div class="col mb-1">
-                                            <label for="name" class=" col-form-label text-sm-start">{{ __('Name') }}
-                                                </label> <span class="text-danger"> *</span>
+                                            <label for="first_name"
+                                                class=" col-form-label text-sm-start">{{ __('First Name') }}
+                                            </label> <span class="text-danger"> *</span>
                                             <div class="">
-                                                <input id="name" type="text" placeholder="Name"
-                                                    class="form-control @error('name') is-invalid @enderror" name="name"
-                                                    value="{{ old('name') }}"required autocomplete="name" autofocus>
-                                                @error('name')
+                                                <input id="first_name" type="text" placeholder="First Name"
+                                                    class="form-control @error('first_name') is-invalid @enderror"
+                                                    name="first_name" value="{{ old('first_name') }}"required
+                                                    autocomplete="first_name" autofocus>
+                                                @error('first_name')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -75,14 +57,78 @@ Drivers
                                             </div>
                                         </div>
                                         <div class="col mb-1">
-                                            <label for="email"
-                                                class=" col-form-label text-sm-start">{{ __('Email Address') }}</label> <span class="text-danger"> *</span>
+                                            <label for="middle_name"
+                                                class=" col-form-label text-sm-start">{{ __('Middle Name') }}
+                                            </label> <span class="text-danger"> </span>
                                             <div class="">
-                                                <input id="email" type="text" placeholder="me@me.com"
-                                                    class="form-control @error('email') is-invalid @enderror"
-                                                    name="email" value="{{ old('email') }}"
-                                                    autocomplete="email" autofocus>
-                                                @error('email')
+                                                <input id="middle_name" type="text" placeholder="Middle Name"
+                                                    class="form-control @error('middle_name') is-invalid @enderror"
+                                                    name="middle_name" value="{{ old('middle_name') }}"
+                                                    autocomplete="middle_name" autofocus>
+                                                @error('middle_name')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col mb-1">
+                                            <label for="last_name"
+                                                class=" col-form-label text-sm-start">{{ __('Last Name') }}
+                                            </label> <span class="text-danger"> *</span>
+                                            <div class="">
+                                                <input id="last_name" type="text" placeholder="Last Name"
+                                                    class="form-control @error('last_name') is-invalid @enderror"
+                                                    name="last_name" value="{{ old('last_name') }}"required
+                                                    autocomplete="last_name" autofocus>
+                                                @error('last_name')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col mb-1">
+                                            <label for="nida" class=" col-form-label text-sm-start">{{ __('NIDA') }}
+                                            </label> <span class="text-danger"> *</span>
+                                            <div class="">
+                                                <input id="nida" type="number" placeholder="NIDA"
+                                                    class="form-control @error('nida') is-invalid @enderror" name="nida"
+                                                    value="{{ old('nida') }}"required autocomplete="nida" autofocus>
+                                                @error('nida')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col mb-1">
+                                            <label for="mobile" class=" col-form-label text-sm-start">{{ __('Phone') }}
+                                            </label> <span class="text-danger"> *</span>
+                                            <div class="">
+                                                <input id="mobile" type="number" placeholder="Eg; 0712345678"
+                                                    maxlength="10" pattern="0[0-9]{9}"
+                                                    class="form-control @error('mobile') is-invalid @enderror"
+                                                    name="mobile" value="{{ old('mobile') }}"required
+                                                    autocomplete="phone" autofocus>
+                                                @error('mobile')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col mb-1">
+                                            <label for="photo"
+                                                class=" col-form-label text-sm-start">{{ __('Profile Photo') }}
+                                            </label> <span class="text-danger"> *</span>
+                                            <div class="">
+                                                <input id="photo" type="file" accept=".jpg,.png,.jpeg,.gif"
+                                                    class="form-control @error('photo') is-invalid @enderror"
+                                                    name="photo" value="{{ old('photo') }}" required>
+                                                @error('photo')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -108,105 +154,39 @@ Drivers
                             <thead class=" table-head">
                                 <tr>
                                     <th class="text-center" style="max-width: 20px">#</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th class="text-center">Status</th>
-                                    <th></th>
+                                    <th>Photo</th>
+                                    <th>Full Name</th>
+                                    <th>NIDA</th>
+                                    <th>Mobile</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($drivers as $index => $driver)
                                     <tr>
                                         <td class="text-center" style="max-width: 20px">{{ ++$index }}</td>
-                                        <td>{{ $driver->name }}</td>
-                                        <td>{{ $driver->email }}</td>
-                                        <td class="text-center">
-                                            <form id="toggle-status-form-{{ $driver->id }}" method="POST"
-                                                action="{{ route('drivers.toggle-status', $driver) }}">
-                                                <div class="mdc-switch mdc-switch--checked" data-mdc-auto-init="MDCSwitch">
-                                                    <div class="mdc-switch__track"></div>
-                                                    <div class="mdc-switch__thumb-underlay">
-                                                        <div class="mdc-switch__thumb">
-                                                            <input type="hidden" name="status" value="0">
-                                                            <input type="checkbox" name="status"
-                                                                id="bassic-status-switch-{{ $driver->id }}"@if ($driver->status) checked @endif
-                                                                class="mdc-switch__native-control" role="switch"
-                                                                value="1" onclick="this.form.submit()" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @csrf
-                                                @method('PUT')
-                                            </form>
+                                        <td>
+
+                                            <div class="profile-image">
+                                                <img height="40px" width="40px"
+                                                    src="{{ asset('storage/' . $driver->photo) }}" alt="Profile image">
+                                            </div>
                                         </td>
-                                        <td class="text-center d-flex justify-content-between text-center">
+
+                                        <td>{{ $driver->first_name }} {{ $driver->middle_name }} {{ $driver->last_name }}
+                                        </td>
+                                        <td>{{ $driver->nida }}</td>
+                                        <td>{{ $driver->mobile }}</td>
+                                        <td class="text-center">
                                             <a href="{{ route('drivers.show', $driver) }}"
-                                                class="btn btn-outline-info btn-sm mx-2">View</a>
+                                                class="btn btn-outline-info mx-2">View</a>
 
                                             <a href="#" class="btn  btn-outline-primary mx-2" type="button"
                                                 data-bs-toggle="modal" data-bs-target="#editModal-{{ $driver->id }}"
                                                 aria-expanded="false" aria-controls="collapseTwo">
                                                 Edit
                                             </a>
-                                            <div class="modal modal-sm fade" id="editModal-{{ $driver->id }}"
-                                                tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Edit Driver
-                                                            </h5>
-                                                            <button type="button" class="btn btn-danger btn-sm btn-close"
-                                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            <form method="POST"
-                                                                action="{{ route('drivers.edit', $driver) }}">
-                                                                @method('PUT')
-                                                                @csrf
-                                                                <div class="text-start mb-1">
-                                                                    <label for="name"
-                                                                        class="col-form-label text-sm-start">{{ __('Name') }}</label>
-                                                                    <input id="name" type="text"
-                                                                        placeholder="Name"
-                                                                        class="form-control @error('name') is-invalid @enderror"
-                                                                        name="name"
-                                                                        value="{{ old('name', $driver->name) }}"
-                                                                        required autocomplete="name" autofocus>
-                                                                    @error('name')
-                                                                        <span class="invalid-feedback" role="alert">
-                                                                            <strong>{{ $message }}</strong>
-                                                                        </span>
-                                                                    @enderror
-                                                                </div>
-                                                                <div class="text-start mb-1">
-                                                                    <label for="email"
-                                                                        class="col-form-label text-sm-start">{{ __('Email Address') }}</label>
-                                                                    <input id="email" type="text"
-                                                                        placeholder="me@me.com"
-                                                                        class="form-control @error('email') is-invalid @enderror"
-                                                                        name="email"
-                                                                        value="{{ old('email', $driver->email) }}"
-                                                                        autocomplete="email" autofocus>
-                                                                    @error('email')
-                                                                        <span class="invalid-feedback" role="alert">
-                                                                            <strong>{{ $message }}</strong>
-                                                                        </span>
-                                                                    @enderror
-                                                                </div>
-                                                                <div class="row mb-1 mt-2">
-                                                                    <div class="text-center">
-                                                                        <button type="submit"
-                                                                            class="btn  btn-primary">
-                                                                            {{ __('Submit') }}
-                                                                        </button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+
                                             <a href="#" class="btn  btn-outline-danger mx-2"
                                                 onclick="if(confirm('Are you sure want to delete {{ $driver->name }}?')) document.getElementById('delete-driver-{{ $driver->id }}').submit()">
                                                 Delete
@@ -216,7 +196,22 @@ Drivers
                                                 @method('delete')
                                             </form>
                                         </td>
-
+                                        <div class="modal modal-lg fade" id="editModal-{{ $driver->id }}"
+                                            tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Edit Driver
+                                                        </h5>
+                                                        <button type="button" class="btn btn-danger btn-sm btn-close"
+                                                            data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        @include('includes.edit_driver_modal')
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </tr>
                                 @endforeach
 

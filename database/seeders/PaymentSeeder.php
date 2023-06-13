@@ -18,7 +18,7 @@ class PaymentSeeder extends Seeder
         collect([
             [
                 'sticker_id' => 1,
-                'vehicle_id' => 2,
+                'vehicle_id' => 1,
                 'date' => "2021-03-23",
                 'amount' => 36500,
                 'receipt_number' => "12345678910",
@@ -30,8 +30,6 @@ class PaymentSeeder extends Seeder
                 'amount' => 36500,
                 'receipt_number' => "12345678911",
             ],
-
-
 
         ])->each(function ($payment) {
             Payment::create($payment);

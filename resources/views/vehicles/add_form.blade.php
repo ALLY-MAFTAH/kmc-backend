@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    Register New Business Firms
+    Register New Vehicle Firms
 @endsection
 @section('style')
     <style>
@@ -21,7 +21,7 @@
                             <div class=" text-left">
                                 <h5 class="my-0">
                                     <span class="">
-                                        <small>{{ __('Business Firm Registration Form') }}
+                                        <small>{{ __('Vehicle Firm Registration Form') }}
                                         </small>
 
                                     </span>
@@ -34,14 +34,14 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('businesses.add') }}" method="POST">
+                    <form action="{{ route('vehicles.add') }}" method="POST">
                         @csrf
                         <br>
-                        <div class="" style="color:gray">Business Info</div>
+                        <div class="" style="color:gray">Vehicle Info</div>
                         <div class="row">
                             <div class="col mb-2">
                                 <label for="name"
-                                    class=" col-form-label text-sm-start">{{ __('Business Name') }}</label><span
+                                    class=" col-form-label text-sm-start">{{ __('Vehicle Name') }}</label><span
                                     class="text-danger"> *</span>
                                 <div class="">
                                     <input id="name" type="text" placeholder="Name"
@@ -100,12 +100,12 @@
                         </div>
                         <div class="row">
                             <div class="col mb-2">
-                                <label for="type_id" class=" col-form-label text-sm-start">{{ __('Business Type') }}
+                                <label for="type_id" class=" col-form-label text-sm-start">{{ __('Vehicle Type') }}
                                     <span class="text-danger"> *</span></label>
                                 <select id="type_id" type="text"
                                     class="form-control form-select @error('type_id') is-invalid @enderror" name="type_id"
                                     value="{{ old('type_id') }}" required autocomplete="type_id" autofocus>
-                                    <option value="">Choose Business Type</option>
+                                    <option value="">Choose Vehicle Type</option>
                                     @foreach ($types as $type)
                                         <option value="{{ $type->id }}">
                                             {{ $type->name }}
@@ -125,7 +125,7 @@
                                     class="form-control form-select @error('source_id') is-invalid @enderror"
                                     name="source_id" value="{{ old('source_id') }}" required autocomplete="source_id"
                                     autofocus>
-                                    <option value="1">Business Licence</option>
+                                    <option value="1">Vehicle Licence</option>
                                     {{-- @foreach ($sources as $source)
                                     <option value="{{ $source->id }}">
                                         {{ $source->name }}

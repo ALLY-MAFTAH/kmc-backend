@@ -93,10 +93,10 @@
                                     <th class="text-center" style="max-width: 20px">#</th>
                                     <th>Issued Date</th>
                                     <th>Receipt Number</th>
-                                    <th>Licence Number</th>
+                                    <th>Sticker Number</th>
                                     <th>Vehicle Reg. Number</th>
-                                    <th>Amount</th>
                                     <th>Vehicle Type</th>
+                                    <th>Amount</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -108,25 +108,20 @@
                                         <td class="text-center" style="max-width: 20px">{{ ++$index }}</td>
                                         <td>{{ Illuminate\Support\Carbon::parse($payment->date)->format('d M Y') }}</td>
                                         <td>{{ $payment->receipt_number }}</td>
-                                        <td>{{ $payment->licence->number }}</td>
+                                        <td>{{ $payment->sticker->number }}</td>
 
                                         <td>
                                             @if ($payment->vehicle)
-                                                <span onclick="goToVehicle(event)" data-id="{{ $payment->vehicle->reg_number }}"
-                                                    style="cursor: pointer" class="text-primary">
+                                                <span onclick="goToVehicle(event)"
+                                                    data-id="{{ $payment->vehicle->reg_number }}" style="cursor: pointer"
+                                                    class="text-primary">
                                                     {{ $payment->vehicle->reg_number }}</span>
                                             @else
                                                 <span class="text-danger">Deleted Vehicle</span>
                                             @endif
                                         </td>
+                                        <td>{{ $payment->vehicle->type }}</td>
                                         <td>{{ number_format($payment->amount, 0, '.', ',') }} TZS</td>
-                                        <td>
-                                            @if ($payment->type)
-                                                {{ $payment->type->name }}
-                                            @else
-                                                <span class="text-danger">Deleted Type</span>
-                                            @endif
-                                        </td>
                                     </tr>
                                     @php
                                         $total += $payment->amount;
@@ -134,7 +129,7 @@
                                 @endforeach
                             </tbody>
                             <tr>
-                                <td colspan="4"></td>
+                                <td colspan="5"></td>
                                 <td>
                                     <h5>Total</h5>
                                 </td>
@@ -153,8 +148,8 @@
 @section('scripts')
     <script>
         function goToVehicle(event) {
-            var tin = event.target.dataset.id;
-            window.location.href = '/business?tin=' + tin;
+            var reg_number = event.target.dataset.id;
+            window.location.href = '/vehicle?reg_number=' + reg_number;
         }
     </script>
 @endsection

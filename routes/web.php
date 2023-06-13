@@ -81,10 +81,12 @@ Route::middleware(['auth'])->group(function () {
     //  PARKINGS ROUTES
     Route::get('/parkings', [ParkingController::class, 'index'])->name('parkings.index');
     Route::get('all-parkings', [ParkingController::class, 'index'])->name('parkings.index');
-    Route::get('parking/{parking}', [ParkingController::class, 'showSticker'])->name('parkings.show');
-    Route::post('add-parking', [ParkingController::class, 'postSticker'])->name('parkings.add');
-    Route::put('edit-parking/{parking}', [ParkingController::class, 'putSticker'])->name('parkings.edit');
-    Route::delete('delete-parking/{parking}', [ParkingController::class, 'deleteSticker'])->name('parkings.delete');
+    Route::get('parking/{parkingId}', [ParkingController::class, 'showParking'])->name('parkings.show');
+    Route::post('add-parking', [ParkingController::class, 'postParking'])->name('parkings.add');
+    Route::post('send-message', [ParkingController::class, 'sendMessage'])->name('parkings.send-message');
+    Route::put('edit-parking/{parking}', [ParkingController::class, 'putParking'])->name('parkings.edit');
+    Route::put('change_profile/{parking}', [ParkingController::class, 'changeProfile'])->name('parkings.change_profile');
+    Route::delete('delete-parking/{parking}', [ParkingController::class, 'deleteParking'])->name('parkings.delete');
     Route::put('parkings/{parking}/status', [ParkingController::class, 'toggleStatus'])->name('parkings.toggle-status');
     Route::get('update-expired-parking-status', [ParkingController::class, 'sendReminderBeforeMonth'])->name('parkings.update-expired-sticker-status');
 
@@ -95,18 +97,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('edit-payment/{payment}', [PaymentController::class, 'putPayment'])->name('payments.edit');
     Route::delete('delete-payment/{payment}', [PaymentController::class, 'deletePayment'])->name('payments.delete');
     Route::put('payments/{payment}/status', [PaymentController::class, 'toggleStatus'])->name('payments.toggle-status');
-
-    //  PROFILES ROUTES
-    Route::get('all-profiles', [ProfileController::class, 'index'])->name('profiles.index');
-
-    //  ALERTS ROUTES
-    Route::get('all-alerts', [AlertController::class, 'index'])->name('alerts.index');
-
-    //  E-MAILS ROUTES
-    Route::post('send-email', [VehicleController::class, 'sendEmail'])->name('send-email');
-
-    //  MESSAGES ROUTES
-    Route::post('send-message', [VehicleController::class, 'sendMessage'])->name('send-message');
 
     //  ROLES ROUTES
     Route::get('all-roles', [RoleController::class, 'index'])->name('roles.index');
@@ -123,6 +113,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('edit-owner/{owner}', [OwnerController::class, 'putOwner'])->name('owners.edit');
     Route::delete('delete-owner/{owner}', [OwnerController::class, 'deleteOwner'])->name('owners.delete');
     Route::put('owners/{owner}/status', [OwnerController::class, 'toggleStatus'])->name('owners.toggle-status');
+    Route::get('owner/photo/{ownerId}', [OwnerController::class, 'viewOwnerPhoto'])->name('book_cover');
 
     //  DRIVERS ROUTES
     Route::get('all-drivers', [DriverController::class, 'index'])->name('drivers.index');
@@ -139,19 +130,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('edit-user/{user}', [UserController::class, 'putUser'])->name('users.edit');
     Route::delete('delete-user/{user}', [UserController::class, 'deleteUser'])->name('users.delete');
     Route::put('users/{user}/status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
-    //  USERS ROUTES
-    Route::get('all-users', [UserController::class, 'index'])->name('users.index');
-    Route::get('user/{user}', [UserController::class, 'showUser'])->name('users.show');
-    Route::post('add-user', [UserController::class, 'postUser'])->name('users.add');
-    Route::put('edit-user/{user}', [UserController::class, 'putUser'])->name('users.edit');
-    Route::delete('delete-user/{user}', [UserController::class, 'deleteUser'])->name('users.delete');
-    Route::put('users/{user}/status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
-
-    // LOG ACTIVITY ROUTES
-    Route::get('log-activities', [LogActivityController::class, 'index'])->name('logs.index');
-
-    //  SETTINGS ROUTES
-    Route::get('all-settings', [SettingController::class, 'index'])->name('settings.index');
 
     // REPORTS ROUTES
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
@@ -159,4 +137,21 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sales-report', [WatercomReportController::class, 'salesReport'])->name('watercom.reports.sales');
     Route::get('/stocks-report', [WatercomReportController::class, 'stocksReport'])->name('watercom.reports.stocks');
     Route::get('/customers-report', [WatercomReportController::class, 'customersReport'])->name('watercom.reports.customers');
+
+    //  PROFILES ROUTES
+    Route::get('all-profiles', [ProfileController::class, 'index'])->name('profiles.index');
+
+    //  ALERTS ROUTES
+    Route::get('all-alerts', [AlertController::class, 'index'])->name('alerts.index');
+
+    //  E-MAILS ROUTES
+    Route::post('send-email', [VehicleController::class, 'sendEmail'])->name('send-email');
+
+    //  MESSAGES ROUTES
+
+    // LOG ACTIVITY ROUTES
+    Route::get('log-activities', [LogActivityController::class, 'index'])->name('logs.index');
+
+    //  SETTINGS ROUTES
+    Route::get('all-settings', [SettingController::class, 'index'])->name('settings.index');
 });

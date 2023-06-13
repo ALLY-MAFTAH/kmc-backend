@@ -10,6 +10,8 @@ use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Request as REQ;
+
 
 class StreetController extends Controller
 {
@@ -21,9 +23,14 @@ class StreetController extends Controller
     public function index()
     {
         $subWards = SubWard::where('status', 1)->orderBy('name')->get();
-        $streets = Street::orderBy('name')->orderBy('name')->get();
+        $streets = Street::orderBy('name')->get();
         $vehicles = Vehicle::all();
         $parkings = Parking::all();
+        if (REQ::is('api/*'))
+            return response()->json([
+                'streets' => $streets,
+                'status' => true
+            ], 200);
         return view('streets.index', compact('streets', 'vehicles', 'subWards', 'parkings'));
     }
     public function showStreet(Request $request, Street $street)
@@ -50,12 +57,12 @@ class StreetController extends Controller
         $parkings = Parking::where('status', 1)->get();
         $vehicles = Vehicle::all();
 
-        return view('streets.show', compact('street', 'parkings','vehicles', 'sticker_status', 'filteredParkings'));
+        return view('streets.show', compact('street', 'parkings', 'vehicles', 'sticker_status', 'filteredParkings'));
     }
     public function postStreet(Request $request)
     {
         try {
-            $subWard = SubWard::findOrFail($request->sub_ward_id);
+            $subWard = SubWard::find($request->sub_ward_id);
             $attributes = $this->validate($request, [
                 'name' => ['required', Rule::unique('streets', 'name')->whereNull('deleted_at')],
                 'sub_ward_id' => 'required',
@@ -63,16 +70,15 @@ class StreetController extends Controller
 
             $attributes['status'] = true;
             $attributes['description'] = $request->description ?? "";
+
             $street = Street::create($attributes);
             $subWard->streets()->save($street);
             LogActivityHelper::addToLog('Added street ' . $street->name);
-            return $street;
 
-            alert()->success('You have successful added street');
+            return ['status' => true, 'data' => $street];
         } catch (\Throwable $th) {
-            alert()->error($th->getMessage());
+            return ['status' => false, 'data' => $th->getMessage()];
         }
-        return Redirect::back()->with('street', $street);
     }
     public function putStreet(Request $request, Street $street)
     {

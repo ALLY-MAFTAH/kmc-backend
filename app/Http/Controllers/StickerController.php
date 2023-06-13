@@ -16,7 +16,8 @@ class StickerController extends Controller
      */
     public function index(Request $request)
     {
-        $stickers = Sticker::all();
+        $stickers = Sticker::latest()->get();
+        $vehicles = Vehicle::all();
         $sticker_status = $request->get('sticker_status', "All Stickers");
         if ($sticker_status != "All Stickers") {
 
@@ -24,12 +25,12 @@ class StickerController extends Controller
         }
 
         // dd($sticker_status);
-        return view('stickers.index', compact('stickers', 'sticker_status'));
+        return view('stickers.index', compact('stickers', 'sticker_status', 'vehicles'));
     }
     public function showSticker(Request $request, Sticker $sticker)
     {
-
-        return view('stickers.show', compact('sticker'));
+        $vehicles = Vehicle::all();
+        return view('stickers.show', compact('sticker', 'vehicles'));
     }
     public function postSticker(Request $request)
     {
@@ -42,24 +43,36 @@ class StickerController extends Controller
                 'vehicle_id' => $request->vehicle_id,
             ]);
 
-            $vehicle = Vehicle::findOrFail($request->vehicle_id);
-            $sticker =  self::storeSticker($stickerRequest);
-            $vehicle->stickers()->save($sticker);
+            $vehicle = Vehicle::find($request->vehicle_id);
+            $sticker = null;
+            $stickerResponse =  self::storeSticker($stickerRequest);
+
+            if ($stickerResponse['status'] == true) {
+                $sticker = $stickerResponse['data'];
+                $vehicle->stickers()->save($sticker);
+            } else {
+                alert()->error($stickerResponse['data']);
+                return back();
+            }
 
             $paymentRequest = new Request([
                 'date' => now(),
-                'amount' => $vehicle->type->amount,
+                'amount' => 36500,
                 'sticker_id' => $sticker->id,
-                'type_id' => $vehicle->type->id,
                 'vehicle_id' => $vehicle->id,
                 'receipt_number' => $request->receipt_number,
             ]);
             $paymentController = new PaymentController();
-            $payment =  $paymentController->postPayment($paymentRequest);
-
-            $sticker->payment()->save($payment);
-            $vehicle->payments()->save($payment);
-            $vehicle->type->payments()->save($payment);
+            $payment = null;
+            $paymentResponse =  $paymentController->postPayment($paymentRequest);
+            if ($paymentResponse['status'] == true) {
+                $payment = $paymentResponse['data'];
+                $sticker->payment()->save($payment);
+                $vehicle->payments()->save($payment);
+            } else {
+                alert()->error($paymentResponse['data']);
+                return back();
+            }
 
             alert()->success('You have successful added sticker');
         } catch (\Throwable $th) {
@@ -76,7 +89,6 @@ class StickerController extends Controller
                 'end_date' => 'required',
                 'start_date' => 'required',
                 'vehicle_id' => 'required',
-
             ]);
 
             $attributes['is_valid'] = true;
@@ -85,10 +97,11 @@ class StickerController extends Controller
             $attributes['period'] = $request->period ?? date('Y') . '/' . date('Y') + 1;
 
             $sticker = Sticker::create($attributes);
-            return $sticker;
+            LogActivityHelper::addToLog('Added sticker with number: ' . $sticker->number);
+
+            return ['status' => true, 'data' => $sticker];
         } catch (\Throwable $th) {
-            alert()->error($th->getMessage());
-            return back();
+            return ['status' => false, 'data' => $th->getMessage()];
         }
         LogActivityHelper::addToLog('Added sticker. Number: ' . $sticker->number);
     }

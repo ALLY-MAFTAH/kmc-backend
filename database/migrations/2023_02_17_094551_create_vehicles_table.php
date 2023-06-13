@@ -17,7 +17,8 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('reg_number')->unique();
             $table->bigInteger('parking_id');
-            $table->bigInteger('owner_id');
+            $table->bigInteger('owner_id')->nullable();
+            $table->bigInteger('driver_id')->nullable();
             $table->string('type');
             $table->string('brand');
             $table->string('color');

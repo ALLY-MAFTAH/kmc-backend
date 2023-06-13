@@ -124,7 +124,31 @@ datalist option {
     box-shadow: 0px 10px 41px -11px rgba(0, 0, 0, 0.7);
 }
 
+.editBtn {
+    background: linear-gradient(45deg, #0a6ced, #2d3b41);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    border: none;
+    border-radius: 25px;
+    padding: 5px;
+    width: 130px;
+    -webkit-box-shadow: 0px 10px 41px -11px rgba(0, 0, 0, 0.7);
+    -moz-box-shadow: 0px 10px 41px -11px rgba(0, 0, 0, 0.7);
+    box-shadow: 0px 10px 41px -11px rgba(0, 0, 0, 0.7);
+}
+
+.editBtnRow {
+    display: flex;
+    justify-content: center;
+}
+
 .contactBtn i {
+    margin-right: 5px;
+}
+
+.editBtn i {
     margin-right: 5px;
 }
 
@@ -141,6 +165,11 @@ datalist option {
 }
 
 .contactBtn:hover {
+    background: linear-gradient(45deg, #5396ee, white, #8ddbf7);
+    color: black;
+}
+
+.editBtn:hover {
     background: linear-gradient(45deg, #5396ee, white, #8ddbf7);
     color: black;
 }
@@ -178,3 +207,10 @@ datalist option {
     background-color: #eed40c1f !important;
     border: 1px dotted #022845 !important;
 }
+
+.profile-image {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 40px;
+    height: 40px;
+  }

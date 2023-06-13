@@ -19,37 +19,37 @@ class WardSeeder extends Seeder
             [
                 'name' => "Bunju",
                 'status' => true,
-                'province_id'=>1,
+                'province_id'=>2,
             ],
             [
                 'name' => "Goba",
                 'status' => true,
-                'province_id'=>1,
+                'province_id'=>2,
             ],
             [
                 'name' => "Wazi",
                 'status' => true,
-                'province_id'=>1,
+                'province_id'=>2,
             ],
             [
                 'name' => "Mabwepande",
                 'status' => true,
-                'province_id'=>1,
+                'province_id'=>2,
             ],
             [
                 'name' => "Makongo",
                 'status' => true,
-                'province_id'=>1,
+                'province_id'=>2,
             ],
             [
                 'name' => "Mbezi Juu",
                 'status' => true,
-                'province_id'=>1,
+                'province_id'=>2,
             ],
             [
                 'name' => "Ndugumbi",
                 'status' => true,
-                'province_id'=>1,
+                'province_id'=>2,
             ],
             [
                 'name' => "Mzimuni",
@@ -84,12 +84,12 @@ class WardSeeder extends Seeder
             [
                 'name' => "Mbweni",
                 'status' => true,
-                'province_id'=>1,
+                'province_id'=>2,
             ],
             [
                 'name' => "Mbezi",
                 'status' => true,
-                'province_id'=>1,
+                'province_id'=>2,
             ],
             [
                 'name' => "Magomeni",
@@ -99,7 +99,7 @@ class WardSeeder extends Seeder
             [
                 'name' => "Kunduchi",
                 'status' => true,
-                'province_id'=>1,
+                'province_id'=>2,
             ],
             [
                 'name' => "Kinondoni",
@@ -129,7 +129,7 @@ class WardSeeder extends Seeder
             [
                 'name' => "Kawe",
                 'status' => true,
-                'province_id'=>1,
+                'province_id'=>2,
             ],
             [
                 'name' => "Hananasif",

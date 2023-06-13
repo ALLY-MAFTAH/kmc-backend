@@ -29,7 +29,7 @@
                             <div class="form-group">
                                 <i class="fas fa-envelope"></i>
                                 <input class="myInput form-control @error('email') is-invalid @enderror"
-                                    placeholder="Email" type="email" name="email" required>
+                                    placeholder="Email" type="email" name="email" autofocus required>
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>

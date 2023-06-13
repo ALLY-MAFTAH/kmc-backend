@@ -28,4 +28,8 @@ class Owner extends Model
     {
         return  $this->hasMany(Vehicle::class);
     }
+    public function alerts()
+    {
+        return  $this->hasMany(Alert::class);
+    }
 }

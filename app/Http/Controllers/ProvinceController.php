@@ -6,8 +6,7 @@ use App\Helpers\LogActivityHelper;
 use App\Models\Parking;
 use App\Models\Vehicle;
 use App\Models\Province;
-use App\Models\Source;
-use App\Models\Ward;
+use Illuminate\Support\Facades\Request as REQ;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -23,11 +22,16 @@ class ProvinceController extends Controller
         $provinces = Province::orderBy('name')->get();
         $vehicles = Vehicle::all();
         $parkings = Parking::all();
+        if (REQ::is('api/*'))
+            return response()->json([
+                'provinces' => $provinces,
+                'status' => true
+            ], 200);
         return view('provinces.index', compact('provinces', 'parkings', 'vehicles'));
     }
     public function showProvince(Request $request, Province $province)
     {
-        $vehicles = Vehicle::orderBy('tin')->get();
+        $vehicles = Vehicle::all();
         return view('provinces.show', compact('province', 'vehicles'));
     }
     public function postProvince(Request $request)

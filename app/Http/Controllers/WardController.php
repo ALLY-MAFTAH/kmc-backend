@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\LogActivityHelper;
-use App\Models\Business;
+use Illuminate\Support\Facades\Request as REQ;
 use App\Models\Parking;
 use App\Models\Province;
-use App\Models\Source;
-use App\Models\SubWard;
 use App\Models\Vehicle;
 use App\Models\Ward;
 use Illuminate\Http\Request;
@@ -26,6 +24,11 @@ class WardController extends Controller
         $parkings = Parking::all();
         $provinces = Province::where('status', 1)->orderBy('name')->get();
         $wards = Ward::orderBy('name')->get();
+        if (REQ::is('api/*'))
+            return response()->json([
+                'wards' => $wards,
+                'status' => true
+            ], 200);
         return view('wards.index', compact('wards', 'parkings', 'provinces', 'vehicles'));
     }
     public function showWard(Request $request, Ward $ward)

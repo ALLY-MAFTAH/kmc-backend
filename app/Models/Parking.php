@@ -13,12 +13,10 @@ class Parking extends Model
     protected $fillable = [
         'pln',
         'name',
-        'province_id',
-        'ward_id',
-        'sub_ward_id',
         'street_id',
         'leader_name',
         'leader_mobile',
+        'leader_photo',
         'capacity',
         'no_of_vehicles',
         'status',
@@ -37,17 +35,9 @@ class Parking extends Model
     {
         return $this->hasMany(Vehicle::class);
     }
-    public function province()
+    public function alerts()
     {
-        return $this->belongsTo(Province::class, 'province_id');
-    }
-    public function ward()
-    {
-        return $this->belongsTo(Ward::class, 'ward_id');
-    }
-    public function subWard()
-    {
-        return $this->belongsTo(SubWard::class, 'sub_ward_id');
+        return $this->hasMany(Alert::class);
     }
     public function street()
     {

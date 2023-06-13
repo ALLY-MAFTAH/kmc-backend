@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\LogActivityHelper;
+use App\Models\Driver;
+use App\Models\Owner;
+use App\Models\Parking;
 use App\Models\Province;
 use App\Models\Sticker;
 use App\Models\Street;
 use App\Models\SubWard;
 use App\Models\Vehicle;
 use App\Models\Ward;
+use App\Services\MessagingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as REQ;
 
@@ -53,13 +58,16 @@ class VehicleController extends Controller
             }
 
             $vehicles = Vehicle::latest()->get();
+            $parkings = Parking::all();
+            $drivers = Driver::all();
+            $owners = Owner::all();
 
 
             if (REQ::is('api/*'))
 
                 return response()->json(['vehicles' => $vehicles, 'status' => 1], 200);
 
-            return view('vehicles.index', compact('vehicles', 'sticker_status', 'filteredVehicles', 'vehicles'));
+            return view('vehicles.index', compact('vehicles', 'sticker_status', 'parkings', 'drivers', 'owners', 'filteredVehicles', 'vehicles'));
         } catch (\Throwable $th) {
             if (REQ::is('api/*'))
                 return response()->json(['error' => $th->getMessage(), 'status' => 0], 404);
@@ -105,12 +113,140 @@ class VehicleController extends Controller
         $subWards = SubWard::where('status', 1)->get();
         $wards = Ward::where('status', 1)->get();
         $provinces = Province::where('status', 1)->get();
+        $parkings = Parking::where('status', 1)->get();
+        $drivers = Driver::all();
+        $owners = Owner::all();
 
         $query = $request->input('query');
         $streets = Street::where('name', 'like', '%' . $query . '%')->get();
-        $latestSticker = Sticker::where('vehicle_id', $vehicle->id)->latest()->first();
+        $latestSticker = Sticker::with('payment')->where('vehicle_id', $vehicle->id)->latest()->first();
+
         $stickers = Sticker::where('vehicle_id', $vehicle->id)->latest()->get();
 
-        return view('vehicles.show', compact('vehicle', 'vehicles', 'stickers', 'amount', 'latestSticker', 'streets', 'subWards', 'wards', 'provinces'));
+        return view('vehicles.show', compact('vehicle', 'parkings', 'drivers', 'owners', 'vehicles', 'stickers', 'amount', 'latestSticker', 'streets', 'subWards', 'wards', 'provinces'));
     }
+
+    public function postVehicle(Request $request)
+    {
+        try {
+            $customMessages = [
+                'reg_number.unique' => 'The registration number is already taken.'
+            ];
+
+            $attributes = $this->validate($request, [
+                'reg_number' => ['required', 'unique:vehicles,reg_number,NULL,id,deleted_at,NULL'],
+                "color" => 'required',
+                "type" => 'required',
+                "brand" => 'required',
+                "parking_id" => 'required',
+                "owner_id" => 'nullable',
+                "driver_id" => 'nullable',
+            ], $customMessages);
+
+            $vehicle = Vehicle::create($attributes);
+            LogActivityHelper::addToLog('Added vehicle with registration number: ' . $vehicle->reg_number);
+
+            $stickerRequest = new Request([
+                "number" => $request->number,
+                "start_date" => $request->start_date,
+                "end_date" => $request->end_date,
+                "vehicle_id" => $vehicle->id,
+            ]);
+
+            $stickerController = new StickerController();
+            $sticker = null;
+            $stickerResponse = $stickerController->storeSticker($stickerRequest);
+
+            if ($stickerResponse['status'] == true) {
+                $sticker = $stickerResponse['data'];
+                $vehicle->stickers()->save($sticker);
+            } else {
+                alert()->error($stickerResponse['data']);
+                return back();
+            }
+
+            $paymentRequest = new Request([
+                "sticker_id" => $sticker->id,
+                "vehicle_id" => $vehicle->id,
+                "date" => now(),
+                "amount" => 36500,
+                "receipt_number" => $request->receipt_number,
+            ]);
+            $paymentController = new PaymentController();
+            $payment = null;
+            $paymentResponse = $paymentController->postPayment($paymentRequest);
+
+            if ($paymentResponse['status'] == true) {
+                $payment = $paymentResponse['data'];
+                $vehicle->payments()->save($payment);
+                $sticker->payment()->save($payment);
+            } else {
+                alert()->error($paymentResponse['data']);
+                return back();
+            }
+
+            alert()->success('Vehicle registered successful');
+            return back();
+        } catch (\Throwable $th) {
+            alert()->error($th->getMessage());
+            return back();
+        }
+    }
+    public function putVehicle(Request $request, Vehicle $vehicle)
+    {
+        $oldVehicleRegNumber = $vehicle->reg_number;
+        try {
+            $customMessages = [
+                'reg_number.unique' => 'The registration number is already taken.'
+            ];
+
+            $attributes = $this->validate($request, [
+                'reg_number' => 'required |unique:vehicles,reg_number,' . $vehicle->id,
+                "color" => 'required',
+                "type" => 'required',
+                "brand" => 'required',
+                "parking_id" => 'required',
+                "owner_id" => 'nullable',
+                "driver_id" => 'nullable',
+            ], $customMessages);
+
+            $vehicle->update($attributes);
+            LogActivityHelper::addToLog('Edted vehicle with registration number: ' . $vehicle->reg_number);
+
+            alert()->success('Vehicle edited successful');
+            if ($oldVehicleRegNumber == $vehicle->reg_number) {
+                return back();
+            } else {
+                return self::index($request);
+            }
+        } catch (\Throwable $th) {
+            alert()->error($th->getMessage());
+            return back();
+        }
+    }
+
+    public function toggleStatus(Request $request, Vehicle $vehicle)
+    {
+        $attributes = $this->validate($request, [
+            'status' => ['required', 'boolean'],
+        ]);
+
+        $vehicle->update($attributes);
+        LogActivityHelper::addToLog('Switched status of vehicle with reg.number: ' . $vehicle->reg_number);
+
+        alert()->success('Vehicle status updated successfully');
+        return back();
+    }
+
+    public function deleteVehicle(Vehicle $vehicle)
+    {
+        $itsName = $vehicle->reg_number;
+        $vehicle->delete();
+        LogActivityHelper::addToLog('Deleted vehicle with Reg. Number: ' . $itsName);
+
+        alert()->success('Vehicle deleted successful');
+        return back();
+    }
+
+  
 }

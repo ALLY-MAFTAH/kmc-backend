@@ -13,19 +13,26 @@ class Alert extends Model
     protected $fillable = [
         'msg',
         'date',
+        'mobile',
         'category',
-        'sticker_id',
-        'vehicle_id',
+        'owner_id',
+        'driver_id',
+        'parking_id',
     ];
     protected $dates = [
         'deleted_at'
     ];
 
-    public function vehicle()
+    public function owner()
     {
-        return $this->belongsTo(Vehicle::class);
+        return $this->belongsTo(Owner::class, 'owner_id');
     }
-    public function sticker()
+    public function driver()
     {
-        return $this->belongsTo(Sticker::class);
-    }}
+        return $this->belongsTo(Driver::class, 'driver_id');
+    }
+    public function parking()
+    {
+        return $this->belongsTo(Parking::class, 'parking_id');
+    }
+}

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\LogActivityHelper;
 use App\Models\Vehicle;
 use App\Models\Payment;
+use App\Models\Sticker;
 use Illuminate\Http\Request;
 
 class PaymentController extends Controller
@@ -18,8 +19,9 @@ class PaymentController extends Controller
     {
         $payments = Payment::all();
         $vehicles = Vehicle::all();
+        $stickers = Sticker::all();
 
-        return view('payments.index', compact('payments', 'vehicles'));
+        return view('payments.index', compact('payments', 'stickers', 'vehicles'));
     }
     public function showPayment(Request $request, Payment $payment)
     {
@@ -27,25 +29,23 @@ class PaymentController extends Controller
     }
     public function postPayment(Request $request)
     {
-        // $payment->date = Carbon::parse($attributes['date']);
+        try {
+            $attributes = $this->validate($request, [
+                'date' => 'required',
+                'amount' => 'required',
+                'vehicle_id' => 'required',
+                'sticker_id' => 'required',
+                'receipt_number' => 'required',
+            ]);
 
-        $attributes = $this->validate($request, [
-            'date' => 'required',
-            'amount' => 'required',
-            'type_id' => 'required',
-            'licence_id' => 'required',
-            'receipt_number' => 'required',
-            'business_id' => 'required',
-        ]);
+            $payment = Payment::create($attributes);
 
-        $payment = Payment::create($attributes);
+            LogActivityHelper::addToLog('Added payment ' . $payment->amount);
 
-        LogActivityHelper::addToLog('Added payment ' . $payment->amount);
-        return $payment;
-        notify()->success('You have successful added payment');
-
-
-        return redirect()->back();
+            return ['status' => true, 'data' => $payment];
+        } catch (\Throwable $th) {
+            return ['status' => false, 'data' => $th->getMessage()];
+        }
     }
     public function putPayment(Request $request, Payment $payment)
     {
@@ -54,15 +54,15 @@ class PaymentController extends Controller
                 'date' => 'required',
                 'amount' => 'required',
                 'receipt_number' => 'required',
-                'type_id' => 'required',
-                'licence_id' => 'required',
+                'vehicle_id' => 'required',
+                'sticker_id' => 'required',
                 'business_id' => 'required',
             ]);
 
             $payment->update($attributes);
             LogActivityHelper::addToLog('Updated payment ' . $payment->amount);
 
-            notify()->success('You have successful edited payment');
+            alert()->success('You have successful edited payment');
         } catch (\Throwable $th) {
             alert()->error($th->getMessage());
         }
@@ -76,7 +76,7 @@ class PaymentController extends Controller
             $payment->delete();
             LogActivityHelper::addToLog('Deleted payment ' . $itsName);
 
-            notify()->success('You have successful deleted payment ' . $itsName . '.');
+            alert()->success('You have successful deleted payment ' . $itsName . '.');
         } catch (\Throwable $th) {
             alert()->error($th->getMessage());
         }

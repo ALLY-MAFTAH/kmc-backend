@@ -33,13 +33,7 @@
                                             <select name="sticker_status" id="sticker_status"
                                                 class="form-select  mx-1 form-control" style="border-radius:0.375rem;"
                                                 onchange="this.form.submit()">
-                                                <option
-                                                    value='All Parkings'{{ $sticker_status == 'All Parkings' ? 'selected' : '' }}>
-                                                    All Parkings </option>
-                                                <option value='1'{{ $sticker_status == '1' ? 'selected' : '' }}>
-                                                    With Valid Stickers </option>
-                                                <option value='0'{{ $sticker_status == '0' ? 'selected' : '' }}>
-                                                    With Expired Stickers </option>
+
 
                                             </select>
                                         </div>
@@ -74,84 +68,97 @@
                             <thead class="table-head">
                                 <tr>
                                     <th class="text-center" style="max-width: 20px">#</th>
-                                    <th>TIN</th>
-                                    <th>Payer's ID</th>
-                                    <th>Current Sticker No.</th>
+                                    <th>PLN</th>
                                     <th>Name</th>
-                                    <th>Mobile</th>
-                                    <th>Type</th>
-                                    <th>Province</th>
-                                    <th>Ward</th>
-                                    <th>Sub-Ward</th>
-                                    <th>Street</th>
+                                    <th>Capacity</th>
+                                    <th>Active Vehicles</th>
+                                    <th>Leader's Full Name</th>
+                                    <th>Leader's Mobile</th>
+                                    <th>Location</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($filteredParkings as $index => $parking)
-                                    <tr ondblclick="goToParkingTr(event)" data-id="{{ $parking->pln }}"
+                                @foreach ($parkings as $index => $parking)
+                                    <tr ondblclick="goToParkingTr(event)" data-id="{{ $parking->id }}"
                                         style="cursor: pointer">
                                         <td class="text-center" style="max-width: 20px">{{ ++$index }}</td>
-                                        <td>
-                                            <span id="tin_input_{{ $parking->pln }}" style="display:none">
-                                                {{-- <form action="{{ route('parkings.change_tin', $parking) }}"
-                                                    method="post">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <input type="text" name="tin" id=""
-                                                        value="{{ old('tin', $parking->pln) }}"required autofocus
-                                                        style="border:none; width:auto">
-                                                </form> --}}
-                                            </span>
-                                            <span id="tin_value_{{ $parking->pln }}" style="display:block">
-                                                {{ substr($parking->pln, 0, 3) . '-' . substr($parking->pln, 0, 3) . '-' . substr($parking->pln, -3) }}
-                                                <a href="#"><i class="material-icons"style="font-size:13px">edit</i>
-                                                </a>
-                                            </span>
-                                        </td>
-                                        <td>{{ $parking->payerId }}</td>
-
-                                        <td>{{ Illuminate\Support\Str::upper($parking->name) }}</td>
                                         <td>{{ $parking->pln }}</td>
-                                        {{-- <td>{{ $parking->province->name }}
-                                        <td>{{ $parking->ward->name }}
-                                        <td>{{ $parking->subWard->name }}
-                                        <td>{{ $parking->street->name }} --}}
+                                        <td>{{ Illuminate\Support\Str::upper($parking->name) }}</td>
+                                        <td class="text-center">{{ $parking->capacity }}</td>
+                                        <td class="text-center">{{ $parking->no_of_vehicles }}</td>
+                                        <td>{{ $parking->leader_name }}</td>
+                                        <td>{{ $parking->leader_mobile }}</td>
+                                        <td class="text-center">
+                                            <a href="#" data-bs-toggle="modal"
+                                                data-bs-target="#locationModal-{{ $parking->id }}"><i
+                                                    class="material-icons" style="">location_on</i></a>
 
-                                        </td>
-                                        <td class=" text-center">
-                                            <form id="toggle-status-form-{{ $parking->id }}" method="POST" class="px-3"
-                                                action="{{ route('parkings.toggle-status', $parking) }}">
-                                                <div class="mdc-switch mdc-switch--checked" data-mdc-auto-init="MDCSwitch">
-                                                    <div class="mdc-switch__track"></div>
-                                                    <div class="mdc-switch__thumb-underlay">
-                                                        <div class="mdc-switch__thumb">
-                                                            <input type="hidden" name="status" value="0">
-                                                            <input type="checkbox" name="status"
-                                                                id="bassic-status-switch-{{ $parking->id }}"@if ($parking->status) checked @endif
-                                                                class="mdc-switch__native-control" role="switch"
-                                                                value="1" onclick="this.form.submit()" />
+                                            <div class="modal modal-lg fade" id="locationModal-{{ $parking->id }}"
+                                                tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalLabel">Parking Location
+                                                            </h5>
+                                                            <button type="button" class="btn btn-danger btn-sm btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="table-responsive">
+                                                                <table class="table">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>Province</th>
+                                                                            <th>Ward</th>
+                                                                            <th>Sub-Ward</th>
+                                                                            <th>Street</th>
+                                                                            <th>Address Name</th>
+                                                                            <th>Latitude</th>
+                                                                            <th>Longitude</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>{{ $parking->street->subWard->ward->province->name }}</td>
+                                                                            <td>{{ $parking->street->subWard->ward->name }}</td>
+                                                                            <td>{{ $parking->street->subWard->name }}</td>
+                                                                            <td>{{ $parking->street->name }}</td>
+                                                                            <td>{{ $parking->location->location_name }}</td>
+                                                                            <td>{{ $parking->location->latitude }}</td>
+                                                                            <td>{{ $parking->location->longitude }} </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <div>
+                                                                    <iframe
+                                                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126792.51368090636!2d38.9826250076294!3d-6.737363608470637!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x185c5b0dcd3c8ea3%3A0x55e6f7d7fd250745!2sTegeta%20A%20Kahama%20street!5e0!3m2!1sen!2stz!4v1675687860167!5m2!1sen!2stz"
+                                                                    width="760" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                                                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                @csrf
-                                                @method('PUT')
-                                            </form>
-                                            <a href="#" onclick="goToParkingBtn(event)"
-                                                data-id="{{ $parking->pln }}"
-                                                class="btn btn-outline-info btn-sm mx-2">View</a>
+                                            </div>
+                                        </td>
+                                        <td class=" text-center">
+
+                                            <a href="{{route('parkings.show',$parking->id)}}"
+                                                class="btn btn-outline-info mx-2">View</a>
                                             <a href="#" class="btn  btn-outline-danger mx-2"
                                                 onclick="if(confirm('Are you sure want to delete {{ $parking->name }}?')) document.getElementById('delete-parking-{{ $parking->id }}').submit()">
                                                 Delete
                                             </a>
                                             <form id="delete-parking-{{ $parking->id }}" method="post"
-                                                action="{{ route('parkings.delete', $parking) }}">@csrf
+                                                action="{{ route('parkings.delete', $parking) }}">
+                                                @csrf
                                                 @method('delete')
                                             </form>
                                         </td>
+
                                     </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
                     </div>
@@ -164,8 +171,8 @@
 @section('scripts')
     <script>
         function goToParkingTr(event) {
-            var tin = event.target.parentNode.dataset.id;
-            window.location.href = '/parking?tin=' + tin;
+            var id = event.target.parentNode.dataset.id;
+            window.location.href = '/parking/' + id;
         }
 
         function goToParkingBtn(event) {

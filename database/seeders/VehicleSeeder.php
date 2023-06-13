@@ -20,6 +20,7 @@ class VehicleSeeder extends Seeder
             [
                 'reg_number' => "T123 AAA",
                 'owner_id' => 1,
+                'driver_id' => 1,
                 'type' => "Bajaji",
                 'brand' => "TVS",
                 'color' => "Blue",
@@ -29,6 +30,7 @@ class VehicleSeeder extends Seeder
             [
                 'reg_number' => "T123 BBB",
                 'owner_id' => 2,
+                'driver_id' => 2,
                 'type' => "Pikipiki",
                 'brand' => "Boxer",
                 'color' => "Black",

@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use App\Helpers\LogActivityHelper;
 use App\Models\Business;
 use App\Models\Parking;
-use App\Models\Source;
-use App\Models\Street;
 use App\Models\SubWard;
 use App\Models\Vehicle;
 use App\Models\Ward;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Request as REQ;
 
 class SubWardController extends Controller
 {
@@ -26,7 +25,12 @@ class SubWardController extends Controller
         $vehicles = Vehicle::all();
         $parkings = Parking::all();
         $wards = Ward::where('status', 1)->orderBy('name')->get();
-        $subWards = SubWard::orderBy('name')->orderBy('name')->get();
+        $subWards = SubWard::orderBy('name')->get();
+        if (REQ::is('api/*'))
+            return response()->json([
+                'subWards' => $subWards,
+                'status' => true
+            ], 200);
         return view('sub_wards.index', compact('subWards', 'parkings', 'wards', 'vehicles'));
     }
     public function showSubWard(Request $request, SubWard $subWard)

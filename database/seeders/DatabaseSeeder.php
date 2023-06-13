@@ -26,5 +26,10 @@ class DatabaseSeeder extends Seeder
         $this->call(VehicleSeeder::class);
         $this->call(StickerSeeder::class);
         $this->call(LocationSeeder::class);
+        $this->call(PaymentSeeder::class);
+        $this->call(SubWardSeeder::class);
+        $this->call(ProvinceSeeder::class);
+        $this->call(DriverSeeder::class);
+        $this->call(AlertSeeder::class);
     }
 }

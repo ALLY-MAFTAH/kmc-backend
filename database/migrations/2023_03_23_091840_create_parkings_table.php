@@ -17,7 +17,6 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('pln')->unique();
             $table->bigInteger('street_id');
-            $table->bigInteger('ward_id');
             $table->double('capacity');
             $table->double('no_of_vehicles');
             $table->string('leader_mobile');

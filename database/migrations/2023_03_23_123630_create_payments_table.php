@@ -21,7 +21,7 @@ return new class extends Migration
             $table->bigInteger('vehicle_id');
             $table->bigInteger('sticker_id');
             $table->softDeletes();
-        });
+            $table->timestamps();        });
     }
 
     /**

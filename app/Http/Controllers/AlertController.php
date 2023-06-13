@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Helpers\LogActivityHelper;
 use App\Models\Alert;
-use App\Models\Business;
-use App\Models\Licence;
+use App\Models\Vehicle;
+use App\Models\Sticker;
 use Illuminate\Http\Request;
 
 class AlertController extends Controller
@@ -18,8 +18,8 @@ class AlertController extends Controller
     public function index()
     {
         $alerts = Alert::all();
-        $businesses = Business::orderBy('tin')->get();
-        return view('alerts.index', compact('alerts', 'businesses'));
+        $vehicles = Vehicle::all();
+        return view('alerts.index', compact('alerts', 'vehicles'));
     }
     public function showAlert(Request $request, Alert $alert)
     {
@@ -27,18 +27,18 @@ class AlertController extends Controller
     }
     public function postAlert(Request $request)
     {
-        $business = Business::findOrFail($request->business_id);
-        $licence = Licence::findOrFail($request->licence_id);
+        $vehicle = Vehicle::findOrFail($request->vehicle_id);
+        $licence = Sticker::findOrFail($request->licence_id);
         $attributes = $this->validate($request, [
             'msg' => 'required',
             'date' => 'required',
             'category' => 'required',
             'licence_id' => 'required',
-            'business_id' => 'required',
+            'vehicle_id' => 'required',
         ]);
 
         $alert = Alert::create($attributes);
-        $business->alerts()->save($alert);
+        $vehicle->alerts()->save($alert);
         $licence->alerts()->save($alert);
 
         LogActivityHelper::addToLog('Added alert ' . $alert->msg);
@@ -54,7 +54,7 @@ class AlertController extends Controller
             'date' => 'required',
             'category' => 'required',
             'licence_id' => 'required',
-            'business_id' => 'required',
+            'vehicle_id' => 'required',
 
         ]);
 
