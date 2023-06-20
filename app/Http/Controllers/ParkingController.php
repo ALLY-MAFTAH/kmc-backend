@@ -229,6 +229,18 @@ class ParkingController extends Controller
         return back();
     }
 
+    public function viewLeaderPhoto($parkingId)
+    {
+        $parking = Parking::find($parkingId);
+        if (!$parking) {
+            return response()->json([
+                'error' => 'Parking not found'
+            ], 404);
+        }
+
+        $pathToFile = storage_path('/app/public/' . $parking->leader_photo);
+        return response()->download($pathToFile);
+    }
     public function deleteParking(Parking $parking){
 
         $parking->delete();

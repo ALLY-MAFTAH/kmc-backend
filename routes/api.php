@@ -37,6 +37,7 @@ Route::post('/register-parking', [ParkingController::class,'postParking']);
 Route::post('edit-parking/{parking}', [ParkingController::class, 'putParking']);
 Route::post('change_profile/{parking}', [ParkingController::class, 'changeProfile']);
 Route::get('parking/leader_photo/{parkingId}', [ParkingController::class, 'viewLeaderPhoto'])->name('book_cover');
+Route::get('parking/leader_photo/{parkingId}', [ParkingController::class,'viewleaderPhoto']);
 
 // WARDS ROUTES
 Route::get('/wards', [WardController::class,'index']);
