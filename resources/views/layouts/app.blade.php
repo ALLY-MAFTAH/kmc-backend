@@ -181,7 +181,7 @@
                                 <img src="{{ asset('images/new.png') }}" width="40" alt="New" />
                                 Mwongozo Wa Utekelezaji Wa Mpango Wa Ruzuku Ya Mbolea Kwa Msimu Wa 2022/2023
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <img src="../images/new.png" width="40" alt="New" />
+                                <img src="{{ asset('images/new.png') }}" width="40" alt="New" />
                                 Mwongozo Wa Utekelezaji Wa Mpango Wa Ruzuku Ya Mbolea Kwa Msimu Wa 2022/2023
                             </a>
                         </marquee>
