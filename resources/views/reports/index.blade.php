@@ -24,19 +24,17 @@
                         </div>
                         <div class="col text-center">
                             <a href="#" class="btn btn-outline-primary collapsed" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#stockReportForm" aria-expanded="false"
+                                data-bs-toggle="collapse" data-bs-target="#revenueReportForm" aria-expanded="false"
                                 aria-controls="reportForm">Revenue
                                 Report</a>
                         </div>
                         <div class="col text-center">
-                            <a href="{{route('stickers.update-expired-sticker-status')}}" class="btn btn-outline-primary" type="button"
-                              >Licence
-                                Report</a>
-                            {{-- <a href="#" class="btn btn-outline-primary collapsed" type="button"
-                                data-bs-toggle="collapse" data-bs-target="#customerReportForm" aria-expanded="false"
+                            <a href="#" class="btn btn-outline-primary collapsed" type="button"
+                                data-bs-toggle="collapse" data-bs-target="#licenceReportForm" aria-expanded="false"
                                 aria-controls="reportForm">Licence
-                                Report</a> --}}
+                                Report</a>
                         </div>
+                       
                     </div>
                     <br>
 
@@ -79,27 +77,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col mb-2">
-                                            <label for="province_id"
-                                                class=" col-form-label text-sm-start">{{ __('Province') }}
-                                            </label>
-                                            <select id="province_id" type="number"
-                                                class="form-control form-select @error('province_id') is-invalid @enderror"
-                                                name="province_id" value="{{ old('province_id') }}"
-                                                autocomplete="province_id" autofocus>
-                                                <option value="">All</option>
-                                                @foreach ($provinces as $province)
-                                                    <option value="{{ $province->id }}">
-                                                        {{ $province->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('province_id')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
+
                                         <div class="col mb-2">
                                             <label for="ward_id" class=" col-form-label text-sm-start">{{ __('Ward') }}
                                             </label>
@@ -109,8 +87,8 @@
                                                 autofocus>
                                                 <option value="">All</option>
                                                 @foreach ($wards as $ward)
-                                                    <option value="{{ $ward->id }}">
-                                                        {{ $ward->name }}
+                                                    <option value="{{ $ward }}">
+                                                        {{ $ward }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -130,8 +108,8 @@
                                                 autocomplete="sub_ward_id" autofocus>
                                                 <option value="">All</option>
                                                 @foreach ($subWards as $subWard)
-                                                    <option value="{{ $subWard->id }}">
-                                                        {{ $subWard->name }}
+                                                    <option value="{{ $subWard }}">
+                                                        {{ $subWard }}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -141,25 +119,7 @@
                                                 </span>
                                             @enderror
                                         </div>
-                                        <div class="col mb-2">
-                                            <label for="street_id"
-                                                class=" col-form-label text-sm-start">{{ __('Street') }}
-                                            </label>
-                                            <select id="street_id" type="text" placeholder=""
-                                                class="form-control form-select @error('street_id') is-invalid @enderror"
-                                                name="street_id" value="">
-                                                <option value="">All</option>
-                                                @foreach ($streets as $street)
-                                                    <option value="{{ $street->id }}">{{ $street->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                            @error('street_id')
-                                                <span class="invalid-feedback" role="alert">
-                                                    <strong>{{ $message }}</strong>
-                                                </span>
-                                            @enderror
-                                        </div>
+
                                     </div>
                                     <div class="row">
 

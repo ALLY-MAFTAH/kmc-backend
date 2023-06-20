@@ -31,7 +31,8 @@
                     <div class="">
                         <input id="capacity" type="text" placeholder="Capacity"
                             class="form-control @error('capacity') is-invalid @enderror" name="capacity"
-                            value="{{ old('capacity', $parking->capacity) }}"required autocomplete="capacity" autofocus>
+                            value="{{ old('capacity', $parking->capacity) }}"required autocomplete="capacity"
+                            autofocus>
                         @error('capacity')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
@@ -72,81 +73,44 @@
             </div>
             <div class="" style="color:gray">Location</div>
             <div class="row">
+
                 <div class="col mb-2">
-                    <label for="province_id" class=" col-form-label text-sm-start">{{ __('Province') }}
+                    <label for="ward" class=" col-form-label text-sm-start">{{ __('Ward') }}
                         <span class="text-danger"> *</span></label>
-                    <select id="province_id" type="number"
-                        class="form-control form-select @error('province_id') is-invalid @enderror" name="province_id"
-                        value="{{ old('province_id') }}" required autocomplete="province_id" autofocus>
-                        <option value="">Choose Province</option>
-                        @foreach ($provinces as $province)
-                            <option value="{{ $province->id }}">
-                                {{ $province->name }}
+                    <select id="ward" type="number"
+                        class="form-control form-select @error('ward') is-invalid @enderror" name="ward"
+                        value="{{ old('ward') }}" required autocomplete="ward" autofocus>
+                        @foreach (App\Helpers\ListHelper::wardsList() as $ward)
+                            <option value="{{ $ward }}" {{ $ward == $parking->ward ? 'selected' : '' }}>
+                                {{ $ward }}
                             </option>
                         @endforeach
                     </select>
-                    @error('province_id')
+                    @error('ward')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
                 </div>
                 <div class="col mb-2">
-                    <label for="ward_id" class=" col-form-label text-sm-start">{{ __('Ward') }}
+                    <label for="sub_ward" class=" col-form-label text-sm-start">{{ __('Sub-Ward') }}
                         <span class="text-danger"> *</span></label>
-                    <select id="ward_id" type="number"
-                        class="form-control form-select @error('ward_id') is-invalid @enderror" name="ward_id"
-                        value="{{ old('ward_id') }}" required autocomplete="ward_id" autofocus>
-                        <option value="">Choose Ward</option>
-                        @foreach ($wards as $ward)
-                            <option value="{{ $ward->id }}">
-                                {{ $ward->name }}
+                    <select id="sub_ward" type="number"
+                        class="form-control form-select @error('sub_ward') is-invalid @enderror" name="sub_ward"
+                        value="{{ old('sub_ward') }}" required autocomplete="sub_ward" autofocus>
+                        @foreach (App\Helpers\ListHelper::subWardsList() as $subWard)
+                            <option value="{{ $subWard }}" {{ $subWard == $parking->sub_ward ? 'selected' : '' }}>
+                                {{ $subWard }}
                             </option>
                         @endforeach
                     </select>
-                    @error('ward_id')
+                    @error('sub_ward')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
                 </div>
-                <div class="col mb-2">
-                    <label for="sub_ward_id" class=" col-form-label text-sm-start">{{ __('Sub-Ward') }}
-                        <span class="text-danger"> *</span></label>
-                    <select id="sub_ward_id" type="number"
-                        class="form-control form-select @error('sub_ward_id') is-invalid @enderror" name="sub_ward_id"
-                        value="{{ old('sub_ward_id') }}" required autocomplete="sub_ward_id" autofocus>
-                        <option value="">Choose Sub-Ward</option>
-                        @foreach ($subWards as $subWard)
-                            <option value="{{ $subWard->id }}">
-                                {{ $subWard->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('sub_ward_id')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
-                <div class="col mb-2">
-                    <label for="street_name" class=" col-form-label text-sm-start">{{ __('Street') }}
-                        <span class="text-danger"> *</span></label>
-                    <input id="street_name" type="text" placeholder=""
-                        class="form-control @error('street_name') is-invalid @enderror" name="street_name"
-                        value="" required list="streets" autocomplete="off">
-                    <datalist id="streets">
-                        @foreach ($streets as $street)
-                            <option value="{{ $street->name }}">
-                            </option>
-                        @endforeach
-                    </datalist>
-                    @error('street_name')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
-                </div>
+
             </div>
             <hr>
             <div class="row mb-2 mt-2">

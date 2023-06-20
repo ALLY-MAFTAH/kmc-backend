@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('parkings', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('pln')->unique();
-            $table->bigInteger('street_id');
             $table->double('capacity');
-            $table->double('no_of_vehicles');
+            $table->string('sub_ward');
+            $table->string('ward');
             $table->string('leader_mobile');
             $table->string('leader_name');
             $table->string('leader_photo')->nullable();

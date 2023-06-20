@@ -166,7 +166,7 @@
                                     <tr>
                                         <td class="text-center" style="max-width: 20px">{{ ++$index }}</td>
                                         <td>
-                                            
+
                                             <div class="profile-image">
                                                 <img height="40px" width="40px"
                                                     src="{{ asset('storage/' . $owner->photo) }}" alt="Profile image">
@@ -178,8 +178,12 @@
                                         <td>{{ $owner->nida }}</td>
                                         <td>{{ $owner->mobile }}</td>
                                         <td class="text-center">
-                                            <a href="{{ route('owners.show', $owner) }}"
-                                                class="btn btn-outline-info mx-2">View</a>
+                                            <form action="{{ route('owners.show') }}" method="GET">
+                                                <input type="number" name="owner_id" value="{{ $owner->id }}"
+                                                    hidden>
+                                                <button type="submit"
+                                                    style="text-decoration: none"class="btn btn-outline-info mx-2">View</button>
+                                            </form>
 
                                             <a href="#" class="btn  btn-outline-primary mx-2" type="button"
                                                 data-bs-toggle="modal" data-bs-target="#editModal-{{ $owner->id }}"

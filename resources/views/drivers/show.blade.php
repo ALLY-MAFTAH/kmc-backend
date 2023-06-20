@@ -78,7 +78,7 @@
                             <div class="col text-center"style="border-right: 1px dashed #333;">
                                 <i class="material-icons" style="font-size: 40px;color:rgb(234, 20, 241)">receipt</i>
                                 <div class="">
-                                    <b> {{ $driver->vehicles->count() }}</b>
+                                    1
                                 </div>
                                 <div class="">
                                     VEHICLES
@@ -119,7 +119,6 @@
                             class="dt-responsive nowrap shadow rounded-3 table table-hover"style="width: 100%">
                             <thead class=" table-head">
                                 <tr>
-                                    <th class="text-center" style="max-width: 20px">#</th>
                                     <th>Reg. Number</th>
                                     <th>Type</th>
                                     <th>Brand</th>
@@ -130,36 +129,44 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($driver->vehicles as $index => $vehicle)
-                                    <tr>
-                                        <td class="text-center" style="max-width: 20px">{{ ++$index }}</td>
-                                        <td><span class="text-primary" onclick="goToVehicleBtn(event)"
-                                                data-id="{{ $vehicle->reg_number }}"
-                                                style="cursor: pointer">{{ $vehicle->reg_number }}
-                                            </span>
-                                        </td>
-                                        <td>{{ $vehicle->type }}</td>
-                                        <td>{{ $vehicle->brand }}</td>
-                                        <td>{{ $vehicle->color }}</td>
-                                        <td><a href="{{ route('parkings.show', $vehicle->parking->id) }}"
-                                                style="text-decoration: none">{{ $vehicle->parking->pln }}</a></td>
-                                        <td><a href="{{ route('owners.show', $vehicle->owner->id) }}"
-                                                style="text-decoration: none">
-                                                {{ $vehicle->owner->first_name }} {{ $vehicle->owner->middle_name }}
-                                                {{ $vehicle->owner->last_name }}</a>
-                                        </td>
-                                        <td class="text-center">
-                                            <form action="{{ route('vehicles.show') }}" method="GET">
-                                                @csrf
-                                                <input type="text" value="{{ $vehicle->reg_number }}" name="reg_number"
-                                                    hidden>
-                                                <button class="btn  btn-outline-primary mx-1" type="submit">
-                                                    View
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                                <tr>
+                                    <td><span class="text-primary" onclick="goToVehicleBtn(event)"
+                                            data-id="{{ $driver->vehicle->reg_number }}"
+                                            style="cursor: pointer">{{ $driver->vehicle->reg_number }}
+                                        </span>
+                                    </td>
+                                    <td>{{ $driver->vehicle->type }}</td>
+                                    <td>{{ $driver->vehicle->brand }}</td>
+                                    <td>{{ $driver->vehicle->color }}</td>
+                                    <td>
+                                        <form action="{{ route('owners.show') }}" method="GET">
+                                            <input type="number" name="parking_id"
+                                                value="{{ $driver->vehicle->owner->id }}" hidden>
+                                            <a type="submit"
+                                                style="text-decoration: none">{{ $driver->vehicle->parking->pln }}</a>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form action="{{ route('owners.show') }}" method="GET">
+                                            <input type="number" name="owner_id" value="{{ $driver->vehicle->owner->id }}"
+                                                hidden>
+                                            <button type="submit"class="btn text-primary" style="text-decoration: none">
+                                                {{ $driver->vehicle->owner->first_name }}
+                                                {{ $driver->vehicle->owner->middle_name }}
+                                                {{ $driver->vehicle->owner->last_name }}</button>
+                                        </form>
+                                    </td>
+                                    <td class="text-center">
+                                        <form action="{{ route('vehicles.show') }}" method="GET">
+                                            @csrf
+                                            <input type="text" value="{{ $driver->vehicle->reg_number }}"
+                                                name="reg_number" hidden>
+                                            <button class="btn  btn-outline-primary mx-1" type="submit">
+                                                View
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -212,7 +219,7 @@
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form method="POST" action="{{ route('send-message') }}">
+                        <form method="POST" action="{{ route('drivers.send_message') }}">
                             @csrf
                             <input hidden type="text" name="driver_id" value="{{ $driver->id }}">
                             <div class="text-start mb-1">

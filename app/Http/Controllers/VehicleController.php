@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\LogActivityHelper;
+use App\Models\Alert;
 use App\Models\Driver;
 use App\Models\Owner;
 use App\Models\Parking;
@@ -13,16 +14,23 @@ use App\Models\SubWard;
 use App\Models\Vehicle;
 use App\Models\Ward;
 use App\Services\MessagingService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as REQ;
 
 
 class VehicleController extends Controller
 {
+    public function getVehiclesApi(){
+        $vehicles = Vehicle::with(['stickers','parking','owner','driver'])-> latest()->get();
+        // dd($vehicles);
+        return response()->json(['vehicles' => $vehicles, 'status' => 1], 200);
+
+    }
     public function index(Request $request)
     {
-        try {
 
+        try {
             $sticker_status = $request->get('sticker_status', "All vehicles");
             $type_id = $request->get('type_id', "All Types");
             $latestSticker = [];
@@ -57,15 +65,10 @@ class VehicleController extends Controller
                 $filteredVehicles = vehicle::all();
             }
 
-            $vehicles = Vehicle::latest()->get();
+            $vehicles = Vehicle::with('stickers')->with('parking')-> latest()->get();
             $parkings = Parking::all();
-            $drivers = Driver::all();
+            $drivers = Driver::whereDoesntHave('vehicle')->get();
             $owners = Owner::all();
-
-
-            if (REQ::is('api/*'))
-
-                return response()->json(['vehicles' => $vehicles, 'status' => 1], 200);
 
             return view('vehicles.index', compact('vehicles', 'sticker_status', 'parkings', 'drivers', 'owners', 'filteredVehicles', 'vehicles'));
         } catch (\Throwable $th) {
@@ -80,7 +83,7 @@ class VehicleController extends Controller
         try {
             $regNumber = $request->regNumber;
 
-            $vehicle = Vehicle::with(['owner', 'stickers' => function ($query) {
+            $vehicle = Vehicle::with(['owner','driver', 'stickers' => function ($query) {
                 $query->latest()->take(1);
             }, 'parking' => function ($q) {
                 $q->with('location');
@@ -109,21 +112,16 @@ class VehicleController extends Controller
         foreach ($vehicle->payments as $payment) {
             $amount += $payment->amount;
         }
-
-        $subWards = SubWard::where('status', 1)->get();
-        $wards = Ward::where('status', 1)->get();
-        $provinces = Province::where('status', 1)->get();
         $parkings = Parking::where('status', 1)->get();
         $drivers = Driver::all();
         $owners = Owner::all();
 
         $query = $request->input('query');
-        $streets = Street::where('name', 'like', '%' . $query . '%')->get();
         $latestSticker = Sticker::with('payment')->where('vehicle_id', $vehicle->id)->latest()->first();
 
         $stickers = Sticker::where('vehicle_id', $vehicle->id)->latest()->get();
 
-        return view('vehicles.show', compact('vehicle', 'parkings', 'drivers', 'owners', 'vehicles', 'stickers', 'amount', 'latestSticker', 'streets', 'subWards', 'wards', 'provinces'));
+        return view('vehicles.show', compact('vehicle', 'parkings', 'drivers', 'owners', 'vehicles', 'stickers', 'amount', 'latestSticker'));
     }
 
     public function postVehicle(Request $request)
@@ -248,5 +246,5 @@ class VehicleController extends Controller
         return back();
     }
 
-  
+
 }

@@ -13,11 +13,8 @@ use Illuminate\Support\Facades\Validator;
 
 class DriverController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+
     public function index(Request $request)
     {
 
@@ -31,18 +28,16 @@ class DriverController extends Controller
             ], 200);
         return view('drivers.index', compact('drivers', 'vehicles', 'parkings'));
     }
-    public function showDriver(Driver $driver)
+    public function showDriver(Request $request)
     {
 
-        $driver = Driver::find($driver->id);
+        $driver = Driver::find($request->driver_id);
         $vehicles = Vehicle::all();
         $parkings = Parking::all();
         $amount = 0;
-        foreach ($driver->vehicles as $vehicle) {
-            foreach ($vehicle->payments as $payment) {
+            foreach ($driver->vehicle->payments as $payment) {
                 $amount += $payment->amount;
             }
-        }
         if (REQ::is('api/*'))
             return response()->json([
                 'driver' => $driver,

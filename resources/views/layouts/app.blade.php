@@ -52,13 +52,13 @@
                 <div class="mdc-drawer__header">
                     <a href="{{ route('home') }}" class="brand-logo" style="text-decoration: none">
                         <img src="{{ asset('images/logo.png') }}" height="30px" alt="logo"><span
-                            class="app-name">My System Name</span>
+                            class="app-name">Smart Kinondoni</span>
                     </a>
                 </div>
                 <div class="mdc-drawer__content">
                     <div class="user-info">
-                        <p class="name">{{ Auth::user()->name }}</p>
-                        <p class="email">{{ Auth::user()->email }}</p>
+                        {{-- <p class="name">{{ Auth::user()->name }}</p>
+                        <p class="email">{{ Auth::user()->email }}</p> --}}
                     </div>
                     <div class="mdc-list-group">
                         <nav class="mdc-list mdc-drawer-menu">
@@ -70,8 +70,6 @@
                                     Dashboard
                                 </a>
                             </div>
-
-
                             <div class="mdc-list-item mdc-drawer-item">
                                 <a class="mdc-drawer-link {{ request()->routeIs('vehicles.show') || request()->routeIs('vehicles.show_add_form') ? 'active' : '' }}"
                                     href="{{ route('vehicles.index') }}">
@@ -81,7 +79,7 @@
                                 </a>
                             </div>
                             <div class="mdc-list-item mdc-drawer-item">
-                                <a class="mdc-drawer-link {{ request()->routeIs('parkings.show') ? 'active' : '' }}"
+                                <a class="mdc-drawer-link {{ request()->route()->getName() === 'parkings.show'? 'active': '' }}"
                                     href="{{ route('parkings.index') }}">
                                     <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
                                         aria-hidden="true">local_parking</i>
@@ -120,43 +118,6 @@
                                 </a>
                             </div>
                             <div class="mdc-list-item mdc-drawer-item">
-                                <a class="mdc-expansion-panel-link {{ request()->routeIs('provinces.show') || request()->routeIs('wards.show') || request()->routeIs('sub_wards.show') || request()->routeIs('streets.show') ? 'expanded' : '' }}"
-                                    href="#" data-toggle="expansionPanel" data-target="divisions">
-                                    <i class="material-icons mdc-list-item__start-detail mdc-drawer-item-icon"
-                                        aria-hidden="true">dashboard</i>
-                                    Divisions
-                                    <i class="mdc-drawer-arrow material-icons">chevron_right</i>
-                                </a>
-                                <div class="mdc-expansion-panel {{ request()->routeIs('provinces.show') || request()->routeIs('wards.show') || request()->routeIs('sub_wards.show') || request()->routeIs('streets.show') ? 'expanded' : '' }}"
-                                    id="divisions"
-                                    style=" {{ request()->routeIs('provinces.show') || request()->routeIs('wards.show') || request()->routeIs('sub_wards.show') || request()->routeIs('streets.show') ? 'display: block' : 'display: none' }}">
-                                    <nav class="mdc-list mdc-drawer-submenu">
-                                        <div class="mdc-list-item mdc-drawer-item">
-                                            <a class="mdc-drawer-link {{ request()->routeIs('provinces.show') ? 'active' : '' }}"
-                                                href="{{ route('provinces.index') }}">
-                                                Provinces
-                                            </a>
-                                        </div>
-                                        <div class="mdc-list-item mdc-drawer-item">
-                                            <a class="mdc-drawer-link  {{ request()->routeIs('wards.show') ? 'active' : '' }}"
-                                                href="{{ route('wards.index') }}">
-                                                Wards
-                                            </a>
-                                        </div>
-                                        <div class="mdc-list-item mdc-drawer-item">
-                                            <a class="mdc-drawer-link  {{ request()->routeIs('sub_wards.show') ? 'active' : '' }}"
-                                                href="{{ route('sub_wards.index') }}">
-                                                Sub-Wards
-                                            </a>
-                                        </div>
-                                        <div class="mdc-list-item mdc-drawer-item">
-                                            <a class="mdc-drawer-link  {{ request()->routeIs('streets.show') ? 'active' : '' }}"
-                                                href="{{ route('streets.index') }}">
-                                                Streets
-                                            </a>
-                                        </div>
-                                    </nav>
-                                </div>
                             </div>
                             <div class="mdc-list-item mdc-drawer-item">
                                 <a class="mdc-drawer-link" href="{{ route('reports.index') }}">
@@ -424,7 +385,14 @@
     <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.3.4/js/buttons.colVis.min.js"></script>
 
-    @yield('scripts')
+    <script>
+        window.onload = function() {
+            var viewportMeta = document.querySelector('meta[name="viewport"]');
+            console.log("viewportMeta");
+            console.log(viewportMeta);
+            viewportMeta.setAttribute('content', 'width=device-width, initial-scale=0.3');
+        };
+    </script>
     <script>
         $(document).ready(function() {
             $(document).on('submit', 'form', function() {
@@ -538,6 +506,8 @@
 
         });
     </script>
+    @yield('scripts')
+
 </body>
 
 </html>

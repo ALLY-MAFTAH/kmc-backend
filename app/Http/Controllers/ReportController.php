@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 // use Carbon\Carbon;
+
+use App\Helpers\ListHelper;
 use App\Models\Business;
 use App\Models\Province;
 use App\Models\Street;
@@ -21,11 +23,9 @@ class ReportController extends Controller
     public function index()
     {
         $vehicles = Vehicle::all();
-        $subWards = SubWard::where('status', 1)->get();
-        $wards = Ward::where('status', 1)->get();
-        $provinces = Province::where('status', 1)->get();
-        $streets = Street::where('status', 1)->get();
-        return view('reports.index', compact('vehicles', 'provinces', 'wards', 'subWards', 'streets'));
+        $wards = ListHelper::wardsList();
+        $subWards = ListHelper::subWardsList();
+        return view('reports.index', compact('vehicles', 'wards', 'subWards'));
     }
 
     public function businessReport(Request $request)

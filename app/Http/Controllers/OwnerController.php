@@ -13,11 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 class OwnerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
 
@@ -31,10 +27,10 @@ class OwnerController extends Controller
             ], 200);
         return view('owners.index', compact('owners', 'vehicles', 'parkings'));
     }
-    public function showOwner(Owner $owner)
+    public function showOwner(Request $request)
     {
 
-        $owner = Owner::find($owner->id);
+        $owner = Owner::find($request->owner_id);
         $vehicles = Vehicle::all();
         $parkings = Parking::all();
         $amount = 0;

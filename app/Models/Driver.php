@@ -24,9 +24,9 @@ class Driver extends Model
         'deleted_at'
     ];
 
-    public function vehicles()
+    public function vehicle()
     {
-        return  $this->hasMany(Vehicle::class);
+        return  $this->hasOne(Vehicle::class);
     }
     public function alerts()
     {

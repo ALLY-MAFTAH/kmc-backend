@@ -7,8 +7,6 @@ use App\Models\Alert;
 use App\Models\Parking;
 use App\Models\Province;
 use App\Models\Sticker;
-use App\Models\Street;
-use App\Models\SubWard;
 use App\Models\Vehicle;
 use App\Models\Ward;
 use App\Services\MessagingService;
@@ -18,27 +16,19 @@ use Illuminate\Support\Facades\Request as REQ;
 
 class ParkingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
         try {
 
             $type_id = $request->get('type_id', "All Types");
 
-            $parkings = Parking::with('location')->where('status', 1)->latest()->get();
+            $parkings = Parking::with('location')->with('vehicles')->where('status', 1)->latest()->get();
             $vehicles = Vehicle::all();
-            $provinces = Province::all();
-            $wards = Ward::all();
-            $subWards = SubWard::all();
-            $streets = Street::all();
 
             if (REQ::is('api/*'))
                 return response()->json(['parkings' => $parkings, 'status' => 1], 200);
-            return view('parkings.index', compact('parkings', 'streets', 'subWards', 'wards', 'provinces', 'vehicles'));
+            return view('parkings.index', compact('parkings','vehicles'));
         } catch (\Throwable $th) {
             if (REQ::is('api/*'))
                 return response()->json(['error' => $th->getMessage(), 'status' => 0], 404);
@@ -47,10 +37,10 @@ class ParkingController extends Controller
         }
     }
 
-    public function showParking($parkingId)
+    public function showParking(Request $request)
     {
         $vehicles = Vehicle::all();
-        $parking = Parking::find($parkingId);
+        $parking = Parking::find($request->parking_id);
 
         if (!$parking) {
             alert()->error('Parking not found');
@@ -63,16 +53,13 @@ class ParkingController extends Controller
                 $amount += $payment->amount;
             }
         }
-        $provinces = Province::where('status', 1)->get();
-        $wards = Ward::where('status', 1)->get();
-        $subWards = SubWard::where('status', 1)->get();
-        $streets = Street::all();
 
-        return view('parkings.show', compact('parking', 'vehicles', 'amount', 'streets', 'subWards', 'wards', 'provinces'));
+        return view('parkings.show', compact('parking', 'vehicles', 'amount'));
     }
 
     public function postParking(Request $request)
     {
+        // dd($request->all());
         $lastRow = Parking::latest()->first();
 
         $lastPln = $lastRow ? $lastRow->pln : "KMCTNTM/000";
@@ -85,22 +72,37 @@ class ParkingController extends Controller
             $attributes = $this->validate($newRequest, [
                 'pln' => ['required', 'unique:parkings'],
                 "capacity" => 'required',
-                "no_of_vehicles" => 'required',
                 "leader_mobile" => 'required',
                 "leader_name" => 'required',
                 "latitude" => 'required',
                 "longitude" => 'required',
                 'location_name' => ['required', 'unique:locations'],
-                "street_id" => 'required',
+                "ward" => 'required',
+                "sub_ward" => 'required',
             ]);
+            $now = Carbon::now()->format('Ymd-His');
+
+            if ($request->hasFile('leader_photo')) {
+
+                $photoPath = $request->file('leader_photo')->storeAs(
+                    '/images',
+                    'profile-img-' . $now . '.' . $request->file('leader_photo')->getClientOriginalExtension(),
+                    'public'
+                );
+            } else {
+                $photoPath = "";
+            }
+
             $attributes['status'] = true;
             $attributes['name'] = $newRequest->name ?? $newRequest->pln;
+            $attributes['leader_photo'] = $photoPath;
 
             $parking = Parking::create($attributes);
 
             $locationController = new LocationController();
             $location = $locationController->postLocation($request, $parking->id);
 
+            $parking->location()->save($location);
             if (REQ::is('api/*'))
                 return response()->json([
                     'parking' => $parking,
@@ -113,37 +115,15 @@ class ParkingController extends Controller
     }
     public function putParking(Request $request)
     {
-        // dd($request->all());
         $parking = Parking::find($request->parking_id);
 
         try {
-            $street = null;
-            $streetExists = Street::where('name', $request->street_name)->exists();
-
-            if ($streetExists) {
-                $street = Street::where('name', $request->street_name)->first();
-            } else {
-                $streetRequest = new Request(['name' => $request->street_name, 'sub_ward_id' => $request->sub_ward_id]);
-                $streetController = new StreetController();
-                $streetResponse =  $streetController->postStreet($streetRequest);
-
-                if ($streetResponse['status'] == true) {
-                    $street = $streetResponse['data'];
-                } else {
-                    if (REQ::is('api/*'))
-                        return  response()->json([
-                            'error' => $streetResponse['data'],
-                            'status' => false
-                        ]);
-
-                    alert()->error($streetResponse['data']);
-                    return back();
-                }
-            }
             $attributes = $this->validate($request, [
                 "capacity" => 'required',
                 "leader_name" => 'required',
                 "leader_mobile" => 'required',
+                "ward" => 'required',
+                "sub_ward" => 'required',
             ]);
             $now = Carbon::now()->format('Ymd-His');
 
@@ -155,11 +135,10 @@ class ParkingController extends Controller
                     'public'
                 );
             } else {
-                $photoPath = $request->leader_photo;
+                $photoPath = $parking->leader_photo;
             }
             $attributes['status'] = true;
             $attributes['name'] = $request->name ?? $parking->pln;
-            $attributes['street_id'] = $street->id;
             $attributes['leader_photo'] = $photoPath;
 
             $parking->update($attributes);
@@ -247,6 +226,13 @@ class ParkingController extends Controller
         } else {
             alert()->error('Message not sent, crosscheck your inputs');
         }
+        return back();
+    }
+
+    public function deleteParking(Parking $parking){
+
+        $parking->delete();
+        alert()->success('Parking deleted successful');
         return back();
     }
 }

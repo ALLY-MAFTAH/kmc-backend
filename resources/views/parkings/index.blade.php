@@ -109,10 +109,8 @@
                                                                 <table class="table">
                                                                     <thead>
                                                                         <tr>
-                                                                            <th>Province</th>
                                                                             <th>Ward</th>
                                                                             <th>Sub-Ward</th>
-                                                                            <th>Street</th>
                                                                             <th>Address Name</th>
                                                                             <th>Latitude</th>
                                                                             <th>Longitude</th>
@@ -120,10 +118,8 @@
                                                                     </thead>
                                                                     <tbody>
                                                                         <tr>
-                                                                            <td>{{ $parking->street->subWard->ward->province->name }}</td>
-                                                                            <td>{{ $parking->street->subWard->ward->name }}</td>
-                                                                            <td>{{ $parking->street->subWard->name }}</td>
-                                                                            <td>{{ $parking->street->name }}</td>
+                                                                            <td>{{ $parking->ward }}</td>
+                                                                            <td>{{ $parking->sub_ward }}</td>
                                                                             <td>{{ $parking->location->location_name }}</td>
                                                                             <td>{{ $parking->location->latitude }}</td>
                                                                             <td>{{ $parking->location->longitude }} </td>
@@ -143,9 +139,13 @@
                                             </div>
                                         </td>
                                         <td class=" text-center">
-
-                                            <a href="{{route('parkings.show',$parking->id)}}"
-                                                class="btn btn-outline-info mx-2">View</a>
+                                            <form action="{{ route('parkings.show') }}" method="GET">
+                                                <input type="number" name="parking_id"
+                                                    value="{{ $parking->id }}" hidden>
+                                                <button type="submit"class="btn  btn-outline-primary mx-2"
+                                                    style="text-decoration: none">View</button>
+                                            </form>
+                                            
                                             <a href="#" class="btn  btn-outline-danger mx-2"
                                                 onclick="if(confirm('Are you sure want to delete {{ $parking->name }}?')) document.getElementById('delete-parking-{{ $parking->id }}').submit()">
                                                 Delete
@@ -175,18 +175,10 @@
             window.location.href = '/parking/' + id;
         }
 
-        function goToParkingBtn(event) {
-            var tin = event.target.dataset.id;
-            window.location.href = '/parking?tin=' + tin;
-        }
+        // function goToParkingBtn(event) {
+        //     var tin = event.target.dataset.id;
+        //     window.location.href = '/parking?tin=' + tin;
+        // }
     </script>
-    <script>
-        $(document).ready(function() {
-            $('a i.material-icons').click(function() {
-                var tin = $(this).closest('tr').data('id');
-                $('#tin_input_' + tin).toggle();
-                $('#tin_value_' + tin).toggle();
-            });
-        });
-    </script>
+
 @endsection

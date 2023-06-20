@@ -178,8 +178,14 @@
                                         <td>{{ $driver->nida }}</td>
                                         <td>{{ $driver->mobile }}</td>
                                         <td class="text-center">
-                                            <a href="{{ route('drivers.show', $driver) }}"
-                                                class="btn btn-outline-info mx-2">View</a>
+
+                                            <form action="{{ route('drivers.show') }}" method="GET">
+                                                <input type="number" name="driver_id" value="{{ $driver->id }}"
+                                                    hidden>
+                                                <button type="submit"class="btn btn-outline-info mx-2"
+                                                    style="text-decoration: none">View</button>
+                                            </form>
+
 
                                             <a href="#" class="btn  btn-outline-primary mx-2" type="button"
                                                 data-bs-toggle="modal" data-bs-target="#editModal-{{ $driver->id }}"

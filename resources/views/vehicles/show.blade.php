@@ -519,7 +519,7 @@
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form method="POST" action="{{ route('send-message') }}">
+                        {{-- <form method="POST" action="{{ route('vehicles.send_message',) }}">
                             @csrf
                             <input hidden type="text" name="vehicle_id" value="{{ $vehicle->id }}">
                             <div class="text-start mb-1">
@@ -539,7 +539,7 @@
                                     </button>
                                 </div>
                             </div>
-                        </form>
+                        </form> --}}
                     </div>
                 </div>
             </div>

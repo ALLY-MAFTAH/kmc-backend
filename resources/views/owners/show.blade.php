@@ -141,18 +141,31 @@
                                         <td>{{ $vehicle->type }}</td>
                                         <td>{{ $vehicle->brand }}</td>
                                         <td>{{ $vehicle->color }}</td>
-                                        <td><a href="{{ route('parkings.show', $vehicle->parking->id) }}"
-                                                style="text-decoration: none">{{ $vehicle->parking->pln }}</a></td>
-                                        <td><a href="{{ route('drivers.show', $vehicle->driver->id) }}"
-                                                style="text-decoration: none">
-                                                {{ $vehicle->driver->first_name }} {{ $vehicle->driver->middle_name }}
-                                                {{ $vehicle->driver->last_name }}</a>
+                                        <td>
+                                            <form action="{{ route('parkings.show') }}" method="GET">
+                                                <input type="number" name="parking_id" value="{{ $vehicle->parking->id }}"
+                                                    hidden>
+                                                <button type="submit" class="btn text-primary"
+                                                    style="text-decoration: none">
+                                                    {{ $vehicle->driver->first_name }} {{ $vehicle->driver->middle_name }}
+                                                    {{ $vehicle->driver->last_name }}</button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form action="{{ route('drivers.show') }}" method="GET">
+                                                <input type="number" name="driver_id" value="{{ $vehicle->driver->id }}"
+                                                    hidden>
+                                                <button type="submit" class="btn text-primary"
+                                                    style="text-decoration: none">
+                                                    {{ $vehicle->driver->first_name }} {{ $vehicle->driver->middle_name }}
+                                                    {{ $vehicle->driver->last_name }}</button>
+                                            </form>
                                         </td>
                                         <td class="text-center">
                                             <form action="{{ route('vehicles.show') }}" method="GET">
                                                 @csrf
-                                                <input type="text" value="{{ $vehicle->reg_number }}" name="reg_number"
-                                                    hidden>
+                                                <input type="text" value="{{ $vehicle->reg_number }}"
+                                                    name="reg_number" hidden>
                                                 <button class="btn  btn-outline-primary mx-1" type="submit">
                                                     View
                                                 </button>
@@ -211,7 +224,7 @@
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form method="POST" action="{{ route('send-message') }}">
+                        <form method="POST" action="{{ route('owners.send_message') }}">
                             @csrf
                             <input hidden type="text" name="owner_id" value="{{ $owner->id }}">
                             <div class="text-start mb-1">

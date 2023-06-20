@@ -75,4 +75,5 @@ class AlertController extends Controller
         notify()->success('You have successful deleted ' . $itsName . '.');
         return back();
     }
+    
 }

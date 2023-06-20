@@ -10,11 +10,7 @@ use Illuminate\Support\Facades\Validator;
 
 class LocationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         $locations = Location::all();
@@ -25,23 +21,20 @@ class LocationController extends Controller
     {
         return view('locations.show', compact('location'));
     }
-    public function postLocation(Request $request)
+    public function postLocation(Request $request, $parkingId)
     {
         $attributes = $this->validate($request, [
-            'parking_id' => 'required',
             'latitude' => "required",
             'longitude' => "required",
             'location_name' => ['required', 'unique:locations'],
         ]);
+        $attributes['parking_id']=$parkingId;
 
         $location = Location::create($attributes);
 
         LogActivityHelper::addToLog('Added location: ' . $location->latitude . ', ' . $location->longitude);
         return $location;
 
-        alert()->success('You have successful added location');
-
-        return redirect()->back();
     }
     public function putLocation(Request $request, Location $location)
     {
