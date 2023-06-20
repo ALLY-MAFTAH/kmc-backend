@@ -167,7 +167,7 @@
             <div class=" main-wrapper mdc-drawer-app-content">
                 <div class="row">
                     <div class="col-4">
-                        <img src="../images/logo.png" height="65px" alt="">
+                        <img src="{{ asset('images/logo.png') }}" height="65px" alt="">
                     </div>
                     <div class="col-8">
                         <div class="banner-img"> </div>
@@ -178,7 +178,7 @@
                     <div class="offset-6">
                         <marquee behavior="scroll" onmouseover="this.stop();" onmouseout="this.start();">
                             <a style="text-decoration: none;color:rgb(10, 32, 10)" href="{{ route('home') }}">
-                                <img src="../images/new.png" width="40" alt="New" />
+                                <img src="{{ asset('images/new.png') }}" width="40" alt="New" />
                                 Mwongozo Wa Utekelezaji Wa Mpango Wa Ruzuku Ya Mbolea Kwa Msimu Wa 2022/2023
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <img src="../images/new.png" width="40" alt="New" />
@@ -222,7 +222,7 @@
                                 <button class="mdc-button mdc-menu-button">
                                     <span class="d-flex align-items-center">
                                         <span class="figure">
-                                            <img src="../images/logo.png" alt="user" class="user">
+                                            <img src="{{ asset('images/logo.png') }}" alt="user" class="user">
                                         </span>
                                         <span class="user-name">{{ Auth::user()->name }}</span>
                                     </span>
@@ -362,10 +362,10 @@
     </div>
     <script src="https://use.fontawesome.com/704fe45b80.js"></script>
 
-    <script src="../assets/vendors/js/vendor.bundle.base.js"></script>
-    <script src="../assets/vendors/chartjs/Chart.min.js"></script>
-    <script src="../assets/js/material.js"></script>
-    <script src="../assets/js/misc.js"></script>
+    <script src="{{ asset('assets/vendors/js/vendor.bundle.base.js') }}"></script>
+    <script src="{{ asset('assets/vendors/chartjs/Chart.min.js') }}"></script>
+    <script src="{{ asset('assets/js/material.js') }}"></script>
+    <script src="{{ asset('assets/js/misc.js') }}"></script>
 
 
     {{-- DATA TABLE --}}
