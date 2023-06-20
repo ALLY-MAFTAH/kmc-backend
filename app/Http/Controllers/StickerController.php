@@ -9,11 +9,7 @@ use Illuminate\Http\Request;
 
 class StickerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
         $stickers = Sticker::latest()->get();
@@ -23,8 +19,6 @@ class StickerController extends Controller
 
             $stickers = Sticker::where('is_valid', $sticker_status)->latest()->get();
         }
-
-        // dd($sticker_status);
         return view('stickers.index', compact('stickers', 'sticker_status', 'vehicles'));
     }
     public function showSticker(Request $request, Sticker $sticker)
@@ -84,12 +78,15 @@ class StickerController extends Controller
     {
         try {
 
+            $customMessages = [
+                'number.unique' => 'The sticker number is already taken.'
+            ];
             $attributes = $this->validate($request, [
-                'number' => 'required |unique:stickers,number,except,id',
+                'number' => ['required', 'unique:stickers,number,NULL,id,deleted_at,NULL'],
                 'end_date' => 'required',
                 'start_date' => 'required',
                 'vehicle_id' => 'required',
-            ]);
+            ],$customMessages);
 
             $attributes['is_valid'] = true;
             $attributes['is_paid'] = true;
@@ -103,7 +100,7 @@ class StickerController extends Controller
         } catch (\Throwable $th) {
             return ['status' => false, 'data' => $th->getMessage()];
         }
-        LogActivityHelper::addToLog('Added sticker. Number: ' . $sticker->number);
+
     }
     public function putSticker(Request $request, Sticker $sticker)
     {

@@ -65,15 +65,14 @@ class VehicleController extends Controller
                 $filteredVehicles = vehicle::all();
             }
 
-            $vehicles = Vehicle::with('stickers')->with('parking')-> latest()->get();
+            $vehicles = Vehicle::latest()->get();
             $parkings = Parking::all();
             $drivers = Driver::whereDoesntHave('vehicle')->get();
             $owners = Owner::all();
 
             return view('vehicles.index', compact('vehicles', 'sticker_status', 'parkings', 'drivers', 'owners', 'filteredVehicles', 'vehicles'));
         } catch (\Throwable $th) {
-            if (REQ::is('api/*'))
-                return response()->json(['error' => $th->getMessage(), 'status' => 0], 404);
+
             alert()->error($th->getMessage());
             return back();
         }
@@ -113,7 +112,12 @@ class VehicleController extends Controller
             $amount += $payment->amount;
         }
         $parkings = Parking::where('status', 1)->get();
-        $drivers = Driver::all();
+        $drivers = Driver::whereDoesntHave('vehicle')
+    ->orWhereHas('vehicle', function ($qr) use ($vehicle) {
+        $qr->where('id', $vehicle->id);
+    })
+    ->get();
+
         $owners = Owner::all();
 
         $query = $request->input('query');

@@ -119,18 +119,8 @@
                                                                 data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <br>
-                                                            <br>
-                                                            <br>
-                                                            <br>
-                                                            <br>
-                                                            <br>
-                                                            Document
-                                                            <br>
-                                                            <br>
-                                                            <br>
-                                                            <br>
-                                                            <br>
+
+                                                            <img src="{{asset('images/sticker.jpg')}}" width="80%" height="80%" alt="">
                                                             <br>
 
                                                         </div>

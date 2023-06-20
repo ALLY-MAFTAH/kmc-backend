@@ -5,12 +5,11 @@ namespace App\Http\Controllers;
 // use Carbon\Carbon;
 
 use App\Helpers\ListHelper;
-use App\Models\Business;
+use App\Models\Vehicle;
 use App\Models\Province;
 use App\Models\Street;
 use App\Models\SubWard;
 use App\Models\Type;
-use App\Models\Vehicle;
 use App\Models\Ward;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -58,7 +57,7 @@ class ReportController extends Controller
         }
         // dd($request->all());
 
-        $title = "Businesses";
+        $title = "Vehiclees";
         $meta = [
             'Registered from' => Carbon::parse($fromDate)->format('D, d M Y') . ' to ' . Carbon::parse($toDate)->format('D, d M Y'),
             'Sorted By' => $sortBy
@@ -83,32 +82,32 @@ class ReportController extends Controller
 
             ];
             if ($streetId != null) {
-                $businesses = Business::where(['street_id' => $streetId])->whereBetween('created_at', [$fromDate, $toDate])->orderBy($sortBy);
-                $title = "Businesses in " . Street::find($streetId)->name;
+                $businesses = Vehicle::where(['street_id' => $streetId])->whereBetween('created_at', [$fromDate, $toDate])->orderBy($sortBy);
+                $title = "Vehiclees in " . Street::find($streetId)->name;
                 $columns['Street'] = function ($result) {
                     return $result->street->name;
                 };
             } elseif ($subWardId != null) {
-                $businesses = Business::where(['sub_ward_id' => $subWardId])->whereBetween('created_at', [$fromDate, $toDate])->orderBy($sortBy);
+                $businesses = Vehicle::where(['sub_ward_id' => $subWardId])->whereBetween('created_at', [$fromDate, $toDate])->orderBy($sortBy);
                 $columns['Sub-Ward'] = function ($result) {
                     return $result->subWard->name;
                 };
-                $title = "Businesses in " . SubWard::find($subWardId)->name;
+                $title = "Vehiclees in " . SubWard::find($subWardId)->name;
             } elseif ($wardId != null) {
-                $businesses = Business::where(['ward_id' => $wardId])->whereBetween('created_at', [$fromDate, $toDate])->orderBy($sortBy);
-                $title = "Businesses in " . Ward::find($wardId)->name;
+                $businesses = Vehicle::where(['ward_id' => $wardId])->whereBetween('created_at', [$fromDate, $toDate])->orderBy($sortBy);
+                $title = "Vehiclees in " . Ward::find($wardId)->name;
                 $columns['Ward'] = function ($result) {
                     return $result->ward->name;
                 };
             } elseif ($provinceId != null) {
-                $businesses = Business::where(['province_id' => $provinceId])->whereBetween('created_at', [$fromDate, $toDate])->orderBy($sortBy);
-                $title = "Businesses in " . Province::find($provinceId)->name;
+                $businesses = Vehicle::where(['province_id' => $provinceId])->whereBetween('created_at', [$fromDate, $toDate])->orderBy($sortBy);
+                $title = "Vehiclees in " . Province::find($provinceId)->name;
                 $columns['Province'] = function ($result) {
                     return $result->province->name;
                 };
                 // dd($sortBy);
             } else {
-                $businesses = Business::whereBetween('created_at', [$fromDate, $toDate])->orderBy($sortBy);
+                $businesses = Vehicle::whereBetween('created_at', [$fromDate, $toDate])->orderBy($sortBy);
             }
             // dd($title);
 
