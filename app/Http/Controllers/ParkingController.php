@@ -59,7 +59,6 @@ class ParkingController extends Controller
 
     public function postParking(Request $request)
     {
-        // dd($request->all());
         $lastRow = Parking::latest()->first();
 
         $lastPln = $lastRow ? $lastRow->pln : "KMCTNTM/000";
